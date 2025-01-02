@@ -1,19 +1,25 @@
-import { createStaticNavigation, DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Login } from './login';
-import "../global.css"
+import {
+  createStaticNavigation,
+  NavigationContainer,
+} from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Login } from "./login";
+import "../global.css";
+import { Dashboard } from "./dashboard";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const RootStack = createNativeStackNavigator({
+const RootStack = createNativeStackNavigator();
+
+// const Navigation = createStaticNavigation(RootStack);
+const BottomNavigation = createBottomTabNavigator({
   screens: {
-    Login,
-    // Home: HomeScreen,
+    Test: RootStack,
   },
 });
-
-
-const Navigation = createStaticNavigation(RootStack);
 export default function RootLayout() {
-  return<Navigation />
-;
+  return (
+    <NavigationContainer>
+      <RootStack.Screen name="Login" component={() => <Login />} />
+    </NavigationContainer>
+  );
 }
-

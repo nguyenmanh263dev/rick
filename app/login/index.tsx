@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -13,10 +14,11 @@ import {
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const { navigate } = useNavigation();
   const handleLogin = () => {
     // Implement your login logic here
     console.log("Login attempted with:", email, password);
+    navigate("Dashboard");
   };
   return (
     <KeyboardAvoidingView
@@ -28,6 +30,10 @@ export const Login = () => {
         <View className="bg-white p-8 rounded-2xl shadow-md">
           <Text className="text-3xl font-bold mb-6 text-center text-gray-800">
             Welcome Back
+          </Text>
+          <Text className="text-sm mb-6 text-center text-gray-300">
+            We're excited to have you back, can't wait to see what you've been
+            up since you last logged in
           </Text>
 
           <TextInput
@@ -48,17 +54,17 @@ export const Login = () => {
             onChangeText={setPassword}
             secureTextEntry
           />
-
+          <TouchableOpacity>
+            <Text className="text-primary text-right">Forgot Password?</Text>
+          </TouchableOpacity>
           <TouchableOpacity
-            className="bg-blue-500 rounded-md py-3"
+            className="button button-primary mt-4"
             onPress={handleLogin}
           >
             <Text className="text-white text-center font-semibold">Log In</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity className="mt-4">
-            <Text className="text-blue-500 text-center">Forgot Password?</Text>
-          </TouchableOpacity>
+          <View className="border-t border-gray-300 my-6" />
         </View>
       </View>
     </KeyboardAvoidingView>

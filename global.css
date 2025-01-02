@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .button {
+    @apply p-3 rounded-md;
+  }
+
+  .button-primary {
+    @apply bg-purple-500;
+  }
+
+  .text-primary {
+    @apply text-purple-500;
+  }
+  .login-container {
+    @apply flex flex-col items-center justify-center px-6 py-8 mx-auto;
+  }
+  .login-title {
+    @apply flex items-center mb-6 text-2xl font-semibold;
+  }
+  .login-card {
+    @apply w-full bg-white rounded-lg shadow dark:border md:mt-0;
+  }
+}
