@@ -6,9 +6,13 @@ import { useNavigation } from "@react-navigation/native";
 
 const AuthContext = React.createContext<{
   isLoggedIn: boolean;
-  login: (token: string) => void;
+  login: () => void;
   logout: () => void;
-} | null>(null);
+}>({
+  isLoggedIn: false,
+  login: () => {},
+  logout: () => {},
+});
 
 export const AuthProvider = ({ children }: { children: React.JSX.Element }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -26,7 +30,7 @@ export const AuthProvider = ({ children }: { children: React.JSX.Element }) => {
     checkToken();
   }, []);
 
-  const login = (token: string) => {
+  const login = () => {
     setIsLoggedIn(true);
   };
 
