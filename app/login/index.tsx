@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
@@ -8,6 +9,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 
@@ -17,8 +19,7 @@ export const Login = () => {
   const { navigate } = useNavigation();
   const handleLogin = () => {
     // Implement your login logic here
-    console.log("Login attempted with:", email, password);
-    navigate("Dashboard");
+    navigate("Dashboard" as never);
   };
   return (
     <KeyboardAvoidingView
@@ -26,47 +27,51 @@ export const Login = () => {
       className="flex-1 bg-gray-100"
     >
       <StatusBar />
-      <View className="flex-1 justify-center px-8">
-        <View className="bg-white p-8 rounded-2xl shadow-md">
-          <Text className="text-3xl font-bold mb-6 text-center text-gray-800">
-            Welcome Back
-          </Text>
-          <Text className="text-sm mb-6 text-center text-gray-300">
-            We're excited to have you back, can't wait to see what you've been
-            up since you last logged in
-          </Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View className="flex-1 justify-center px-8">
+          <View className="bg-white p-8 rounded-2xl shadow-md">
+            <Text className="text-3xl font-bold mb-6 text-center text-gray-800">
+              Welcome Back
+            </Text>
+            <Text className="text-sm mb-6 text-center text-gray-300">
+              We're excited to have you back, can't wait to see what you've been
+              up since you last logged in
+            </Text>
 
-          <TextInput
-            className="bg-gray-100 text-gray-700 rounded-md px-4 py-3 mb-4"
-            placeholder="Email"
-            placeholderTextColor="#9CA3AF"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
+            <TextInput
+              className="bg-gray-100 text-gray-700 rounded-md px-4 py-3 mb-4"
+              placeholder="Email"
+              placeholderTextColor="#9CA3AF"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
 
-          <TextInput
-            className="bg-gray-100 text-gray-700 rounded-md px-4 py-3 mb-6"
-            placeholder="Password"
-            placeholderTextColor="#9CA3AF"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-          <TouchableOpacity>
-            <Text className="text-primary text-right">Forgot Password?</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="button button-primary mt-4"
-            onPress={handleLogin}
-          >
-            <Text className="text-white text-center font-semibold">Log In</Text>
-          </TouchableOpacity>
+            <TextInput
+              className="bg-gray-100 text-gray-700 rounded-md px-4 py-3 mb-6"
+              placeholder="Password"
+              placeholderTextColor="#9CA3AF"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+            <TouchableOpacity>
+              <Text className="text-primary text-right">Forgot Password?</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="button button-primary mt-4"
+              onPress={handleLogin}
+            >
+              <Text className="text-white text-center font-semibold">
+                Log In
+              </Text>
+            </TouchableOpacity>
 
-          <View className="border-t border-gray-300 my-6" />
+            <View className="border-t border-gray-300 my-6" />
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };

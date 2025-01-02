@@ -7,19 +7,40 @@ import { Login } from "./login";
 import "../global.css";
 import { Dashboard } from "./dashboard";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import VerifyPin from "./verify-pin";
 
-const RootStack = createNativeStackNavigator();
-
-// const Navigation = createStaticNavigation(RootStack);
-const BottomNavigation = createBottomTabNavigator({
+const RootStack = createNativeStackNavigator({
   screens: {
-    Test: RootStack,
+    Login: {
+      screen: Login,
+      options: {
+        headerShown: false,
+      },
+    },
+    Dashboard: {
+      screen: Dashboard,
+
+      options: {
+        headerShown: true,
+      },
+    },
+    VerifyPin: {
+      screen: VerifyPin,
+
+      options: {
+        headerShown: true,
+        headerBackVisible: true, // Chỉ hiển thị nút back
+        headerTitle: "", //
+      },
+    },
+    // Home: HomeScreen,
   },
 });
+
+const Navigation = createStaticNavigation(RootStack);
+const BottomNavigation = createBottomTabNavigator({
+  screens: {},
+});
 export default function RootLayout() {
-  return (
-    <NavigationContainer>
-      <RootStack.Screen name="Login" component={() => <Login />} />
-    </NavigationContainer>
-  );
+  return <Navigation />;
 }
