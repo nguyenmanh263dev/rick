@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import BottomMenu from "../../components/layouts/menu";
@@ -21,15 +22,19 @@ export const Dashboard = () => {
   const [text, setText] = useState<TextRecognitionResult>();
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets);
-      recognizeText(result.assets[0].uri || "");
+    try {
+      await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: "images",
+        quality: 1,
+      });
+    } catch (error) {
+      console.log("hieudang log", error);
     }
+
+    // if (!result.canceled) {
+    //   setImage(result.assets);
+    //   recognizeText(result.assets[0].uri || "");
+    // }
   };
 
   const recognizeText = async (imageUri: string) => {
@@ -42,20 +47,21 @@ export const Dashboard = () => {
   };
 
   return (
-    <AuthProvider>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1 bg-gray-100 relative h-screen-safe"
-      >
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Button title="Pick an image" onPress={pickImage} />
-          {image && <Image source={{ uri: image[0]?.uri }} />}
-          {text && <Text>Recognized Text: {text.text}</Text>}
-        </View>
-        <BottomMenu />
-      </KeyboardAvoidingView>
-    </AuthProvider>
+    // <AuthProvider>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className="flex-1 bg-gray-100 relative h-screen-safe"
+    >
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <TouchableOpacity onPress={pickImage}>
+          <Text>Pick an image</Text>
+        </TouchableOpacity>
+        {/* <Button title="Pick an image" onPress={pickImage} /> */}
+        {/* {image[0] && <Image source={{ uri: image[0]?.uri }} />} */}
+        {/* {text && <Text>Recognized Text: {text.text}</Text>} */}
+      </View>
+      <BottomMenu />
+    </KeyboardAvoidingView>
+    // </AuthProvider>
   );
 };

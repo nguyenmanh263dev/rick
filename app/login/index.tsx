@@ -1,4 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import * as ImagePicker from "expo-image-picker";
+// import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
   Keyboard,
@@ -16,10 +18,11 @@ import {
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { navigate } = useNavigation();
-  const handleLogin = () => {
-    // Implement your login logic here
-    navigate("Dashboard" as never);
+  // const { navigate } = useNavigation();
+  const handleLogin = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: "images",
+    });
   };
   return (
     <KeyboardAvoidingView
