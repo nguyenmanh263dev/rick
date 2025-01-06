@@ -14,15 +14,14 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const { navigate } = useNavigation();
+  const { navigate } = useNavigation();
   const handleLogin = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: "images",
-    });
+    navigate("Dashboard" as never);
   };
   return (
     <KeyboardAvoidingView

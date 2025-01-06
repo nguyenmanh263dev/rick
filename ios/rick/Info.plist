@@ -45,11 +45,11 @@
       <true/>
     </dict>
     <key>NSCameraUsageDescription</key>
-    <string>Allow concac to access your camera</string>
+    <string>This app requires access to your camera to take photos.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Allow concac to access your microphone</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>Allow concac to access your photos</string>
+    <string>This app requires access to your photo library to select images.</string>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>

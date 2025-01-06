@@ -21,20 +21,38 @@ export const Dashboard = () => {
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset[]>([]);
   const [text, setText] = useState<TextRecognitionResult>();
 
-  const pickImage = async () => {
-    try {
-      await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: "images",
-        quality: 1,
-      });
-    } catch (error) {
-      console.log("hieudang log", error);
+  const pickImage2 = async () => {
+    // Request permissions
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      alert("Permission to access the gallery is required!");
+      return;
     }
 
-    // if (!result.canceled) {
-    //   setImage(result.assets);
-    //   recognizeText(result.assets[0].uri || "");
-    // }
+    // Open image library
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: "images",
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets); // Adjust based on the result structure
+    }
+  };
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets);
+      recognizeText(result.assets[0].uri || "");
+    }
   };
 
   const recognizeText = async (imageUri: string) => {
@@ -56,9 +74,9 @@ export const Dashboard = () => {
         <TouchableOpacity onPress={pickImage}>
           <Text>Pick an image</Text>
         </TouchableOpacity>
-        {/* <Button title="Pick an image" onPress={pickImage} /> */}
-        {/* {image[0] && <Image source={{ uri: image[0]?.uri }} />} */}
-        {/* {text && <Text>Recognized Text: {text.text}</Text>} */}
+        <Button title="Pick an image" onPress={pickImage} />
+        {image[0] && <Image source={{ uri: image[0]?.uri }} />}
+        {text && <Text>Recognized Text: {text.text}</Text>}
       </View>
       <BottomMenu />
     </KeyboardAvoidingView>
