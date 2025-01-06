@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Button,
   Image,
@@ -64,8 +64,14 @@ export const Dashboard = () => {
     }
   };
 
+  const bills = useMemo(() => {
+    return text?.text.split("Sao chép").map((item) => item.split("\n")) || [];
+  }, [text?.text]);
+
+  const result = bills[0] || [];
+  console.log(123, result[2], bills[1]);
+
   return (
-    // <AuthProvider>
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1 bg-gray-100 relative h-screen-safe"
@@ -76,10 +82,9 @@ export const Dashboard = () => {
         </TouchableOpacity>
         <Button title="Pick an image" onPress={pickImage} />
         {image[0] && <Image source={{ uri: image[0]?.uri }} />}
-        {text && <Text>Recognized Text: {text.text}</Text>}
+        {text && <Text>Recognized Text: 12,{JSON.stringify(bills)}</Text>}
       </View>
       <BottomMenu />
     </KeyboardAvoidingView>
-    // </AuthProvider>
   );
 };
