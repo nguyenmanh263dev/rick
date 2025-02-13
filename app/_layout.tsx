@@ -9,6 +9,9 @@ import { Dashboard } from "./dashboard";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import VerifyPin from "./verify-pin";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Schedule } from "./schedule";
+import { Wallet } from "./wallet";
+import { Profile } from "./profile";
 
 const RootStack = createNativeStackNavigator({
   screens: {
@@ -20,9 +23,30 @@ const RootStack = createNativeStackNavigator({
     },
     Dashboard: {
       screen: Dashboard,
-
       options: {
         headerShown: true,
+        headerBackVisible: false,
+      },
+    },
+    Schedule: {
+      screen: Schedule,
+      options: {
+        headerShown: true,
+        headerBackVisible: false,
+      },
+    },
+    Wallet: {
+      screen: Wallet,
+      options: {
+        headerShown: true,
+        headerBackVisible: false,
+      },
+    },
+    Profile: {
+      screen: Profile,
+      options: {
+        headerShown: true,
+        headerBackVisible: false,
       },
     },
     VerifyPin: {

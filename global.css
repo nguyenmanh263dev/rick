@@ -23,4 +23,8 @@
   .login-card {
     @apply w-full bg-white rounded-lg shadow dark:border md:mt-0;
   }
+
+  .card {
+    @apply p-4 rounded-md shadow-slate-500 border border-slate-700;
+  }
 }
