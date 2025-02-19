@@ -12,6 +12,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Schedule } from "./schedule";
 import { Wallet } from "./wallet";
 import { Profile } from "./profile";
+import { CommonModalProvider } from "../context/modal.context";
 
 const RootStack = createNativeStackNavigator({
   screens: {
@@ -67,5 +68,9 @@ const Navigation = createStaticNavigation(RootStack);
 //   screens: {},
 // });
 export default function RootLayout() {
-  return <Navigation />;
+  return (
+    <CommonModalProvider>
+      <Navigation />
+    </CommonModalProvider>
+  );
 }

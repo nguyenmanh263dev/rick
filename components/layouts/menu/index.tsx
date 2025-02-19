@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { menuItems } from "./config";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import { useAddBillModal } from "../../../context/modal.context";
 
 type MenuItem = {
   icon: keyof typeof Ionicons.glyphMap;
@@ -36,13 +37,15 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
   const rightMenu = [item3, item4];
   const route = useRoute();
   const navigation = useNavigation();
+  const { onOpen } = useAddBillModal();
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
-      allowsEditing: false,
-      quality: 1,
-      allowsMultipleSelection: true,
-    });
+    // let result = await ImagePicker.launchImageLibraryAsync({
+    //   mediaTypes: ["images", "videos"],
+    //   allowsEditing: false,
+    //   quality: 1,
+    //   allowsMultipleSelection: true,
+    // });
+    await onOpen();
   };
   return (
     <View className=" border-t border-gray-200 absolute bottom-0 left-0 right-0">
