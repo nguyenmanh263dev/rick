@@ -7,8 +7,8 @@ export const menuItems = [
   },
   {
     icon: "calendar",
-    label: "Schedule",
-    path: "/schedule",
+    label: "Calendar",
+    path: "/calendar",
     onPress: () => console.log("Profile pressed"),
   },
   {

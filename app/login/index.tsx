@@ -15,14 +15,23 @@ import {
   View,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { useMutation } from "@tanstack/react-query";
+import { AuthService } from "../../services";
 export const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("manhdihoc");
+  const [password, setPassword] = useState("manhDiHoc@123");
   const { navigate } = useNavigation();
+  const { mutateAsync: loginMutation } = useMutation({
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      AuthService.login(email, password),
+  });
   const handleLogin = async () => {
+    const res = await loginMutation({ email, password });
+    console.log(res);
     navigate("Dashboard" as never);
   };
+  console.log(process.env.API_BASE_URL);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}

@@ -10,8 +10,9 @@ import DatePicker, { DatePickerProps } from "react-native-date-picker";
 // onOpen is Promise, when call opOpen, modal will show, and when modal close, promise finish
 // if created successful, promise return new property, if cancel return undefined
 
-interface DateProps extends DatePickerProps {
+interface DateProps extends Omit<DatePickerProps, "date"> {
   isOpen?: boolean;
+  date?: Date | null;
 }
 
 interface UseDisclosureProps<T> {
@@ -56,11 +57,6 @@ export const useAddBillModal = () => {
   return context.addBill;
 };
 
-export const useDatePicker = () => {
-  const context = useContext(CommonModalContext);
-  return context.datePicker;
-};
-
 export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
   const [addBillModalVisible, setAddBillModalVisible] = useState(false);
   const [selectDatePickerModalProps, setDatePickerModalProps] =
@@ -89,7 +85,7 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
     setAddBillModalVisible(false);
   };
 
-  const handleOpenDatePickerModal = (dateProps: DatePickerProps) => {
+  const handleOpenDatePickerModal = (dateProps: DateProps) => {
     setDatePickerModalProps(() => ({ isOpen: true, ...dateProps }));
     return new Promise<Date | undefined>((resolve) => {
       promiseDatePicker.current = { resolve };
@@ -122,7 +118,7 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
       <DatePicker
         modal
         open={selectDatePickerModalProps.isOpen}
-        date={selectDatePickerModalProps.date}
+        date={selectDatePickerModalProps.date || new Date()}
         onConfirm={(date) => {
           handleDatePickerClose(date);
         }}

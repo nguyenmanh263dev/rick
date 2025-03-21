@@ -9,10 +9,15 @@ import { Dashboard } from "./dashboard";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import VerifyPin from "./verify-pin";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Schedule } from "./schedule";
-import { Wallet } from "./wallet";
+
 import { Profile } from "./profile";
 import { CommonModalProvider } from "../context/modal.context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Calendar } from "./calendar";
+import Wallet from "./wallet";
+import CategoryDetail from "./profile/container/category";
+import ReportDetail from "./profile/container/report";
 
 const RootStack = createNativeStackNavigator({
   screens: {
@@ -26,37 +31,48 @@ const RootStack = createNativeStackNavigator({
       screen: Dashboard,
       options: {
         headerShown: true,
-        headerBackVisible: false,
+        headerBackVisible: true,
       },
     },
-    Schedule: {
-      screen: Schedule,
+    Calendar: {
+      screen: Calendar,
       options: {
         headerShown: true,
-        headerBackVisible: false,
+        headerBackVisible: true,
       },
     },
     Wallet: {
       screen: Wallet,
       options: {
         headerShown: true,
-        headerBackVisible: false,
+        headerBackVisible: true,
       },
     },
     Profile: {
       screen: Profile,
       options: {
         headerShown: true,
-        headerBackVisible: false,
+        headerBackVisible: true,
       },
     },
     VerifyPin: {
       screen: VerifyPin,
-
       options: {
         headerShown: true,
-        headerBackVisible: true, // Chỉ hiển thị nút back
-        headerTitle: "", //
+        headerBackVisible: true,
+        headerTitle: "",
+      },
+    },
+    CategoryDetail: {
+      screen: CategoryDetail,
+      options: {
+        headerShown: false,
+      },
+    },
+    ReportDetail: {
+      screen: ReportDetail,
+      options: {
+        headerShown: false,
       },
     },
     // Home: HomeScreen,
@@ -68,9 +84,14 @@ const Navigation = createStaticNavigation(RootStack);
 //   screens: {},
 // });
 export default function RootLayout() {
+  const client = new QueryClient();
   return (
-    <CommonModalProvider>
-      <Navigation />
-    </CommonModalProvider>
+    <QueryClientProvider client={client}>
+      <GestureHandlerRootView>
+        <CommonModalProvider>
+          <Navigation />
+        </CommonModalProvider>
+      </GestureHandlerRootView>
+    </QueryClientProvider>
   );
 }

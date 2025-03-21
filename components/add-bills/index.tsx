@@ -1,16 +1,8 @@
 import React from "react";
-import {
-  Modal,
-  View,
-  Text,
-  Pressable,
-  FlatList,
-  TextInput,
-  Button,
-} from "react-native";
-import DatePicker from "react-native-date-picker";
-import RNPickerSelect from "react-native-picker-select";
-import { useDatePicker } from "../../context/modal.context";
+import { Modal, View, Text, Pressable, FlatList } from "react-native";
+
+import { Bill } from "./Bill";
+import { IBill } from "../../types";
 
 interface ModalProps {
   isVisible: boolean;
@@ -19,30 +11,9 @@ interface ModalProps {
   children?: React.ReactNode;
 }
 
-const defaultIncomeOutcome = [
+const data: IBill[] = [
   {
-    label: "Increase",
-    value: "increase",
-  },
-  {
-    label: "Decrease",
-    value: "decrease",
-  },
-];
-
-const defaultCategories = [
-  {
-    label: "Food",
-    value: "Food",
-  },
-  {
-    label: "Drink",
-    value: "Drink",
-  },
-];
-
-const data = [
-  {
+    id: 1,
     type: "increase",
     date: new Date(),
     amount: 1000,
@@ -50,6 +21,7 @@ const data = [
     description: "Mua thức ăn",
   },
   {
+    id: 2,
     type: "increase",
     date: new Date(),
     amount: 1000,
@@ -57,6 +29,7 @@ const data = [
     description: "Mua thức ăn",
   },
   {
+    id: 3,
     type: "increase",
     date: new Date(),
     amount: 1000,
@@ -64,14 +37,8 @@ const data = [
     description: "Mua thức ăn",
   },
 ];
-const AddBill: React.FC<ModalProps> = ({
-  isVisible,
-  onClose,
-  title,
-  children,
-}) => {
+const AddBill: React.FC<ModalProps> = ({ isVisible, onClose, title }) => {
   const [listData, setListData] = React.useState(data);
-  const { onOpen: handlePickDate } = useDatePicker();
 
   return (
     <Modal visible={isVisible} transparent animationType="slide">
@@ -81,69 +48,39 @@ const AddBill: React.FC<ModalProps> = ({
           <FlatList
             data={listData}
             renderItem={({ item, index }) => (
-              <View className=" border-b py-4">
-                <View className="flex justify-between items-center flex-row">
-                  <Text>{index + 1}</Text>
-                  <RNPickerSelect
-                    value={item.type}
-                    onValueChange={(value) => {
-                      const cloneArr = [...listData];
-                      cloneArr[index].type = value;
-                      setListData(cloneArr);
-                    }}
-                    items={defaultIncomeOutcome}
-                  />
-                  <TextInput
-                    className=" border-0 max-w-1/4"
-                    value={item.amount.toString()}
-                    keyboardType="numeric"
-                    onChangeText={(text) => {
-                      const cloneArr = [...listData];
-                      cloneArr[index].amount = Number(text);
-                      setListData(cloneArr);
-                    }}
-                  />
-                  <RNPickerSelect
-                    value={item.category}
-                    onValueChange={(value) => {
-                      const cloneArr = [...listData];
-                      cloneArr[index].category = value;
-                      setListData(cloneArr);
-                    }}
-                    items={defaultCategories}
-                  />
-                  <Pressable
-                    onPress={async () => {
-                      const newDate = await handlePickDate({ date: item.date });
-                      if (newDate) {
-                        const cloneArr = [...listData];
-                        cloneArr[index].date = newDate;
-                        setListData(cloneArr);
-                      }
-                    }}
-                  >
-                    <Text>{item.date.toDateString()}</Text>
-                  </Pressable>
-                </View>
-                <TextInput
-                  className="mt-4 border-0 max-w-1/4"
-                  value={item.description}
-                  onChangeText={(text) => {
-                    const cloneArr = [...listData];
-                    cloneArr[index].description = text;
-                    setListData(cloneArr);
-                  }}
-                />
-              </View>
+              <Bill
+                key={item.id}
+                onChange={(item) => {
+                  const updatedData = [...listData];
+                  updatedData[index] = item;
+                  setListData(updatedData);
+                }}
+                onDelete={() => {
+                  const updatedData = [...listData];
+                  updatedData.splice(index, 1);
+                  setListData(updatedData);
+                }}
+                index={index}
+                item={item}
+              />
             )}
           />
-
-          <Pressable
-            onPress={onClose}
-            className="mt-4 bg-blue-500 py-2 rounded-xl"
-          >
-            <Text className="text-white text-center font-semibold">Close</Text>
-          </Pressable>
+          <View className="flex ">
+            <Pressable
+              onPress={onClose}
+              className="mt-4 bg-blue-500 py-2 rounded-xl"
+            >
+              <Text className="text-white text-center font-semibold">
+                Close
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={onClose}
+              className="mt-4 border border-blue-500 py-2 rounded-xl"
+            >
+              <Text className="text-white text-center font-semibold">Save</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Modal>

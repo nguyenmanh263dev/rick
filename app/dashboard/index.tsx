@@ -1,27 +1,29 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
-  Button,
-  Image,
   KeyboardAvoidingView,
   Platform,
   Text,
-  TouchableOpacity,
   View,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 import BottomMenu from "../../components/layouts/menu";
-import { AuthProvider } from "../../context/auth.context";
-import RNPickerSelect from "react-native-picker-select";
+import FinanceReport from "../../components/FinanceReport";
 
 export const Dashboard = () => {
-  const [selectedValue, setSelectedValue] = useState("java");
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 bg-gray-100 relative h-screen-safe"
+      className="flex-1 bg-gray-100 relative h-screen"
     >
-      <View style={{}}>
-        <Text>Pick an image</Text>
-      </View>
+      <SafeAreaView className="flex-1">
+        <View className="px-4 py-3 bg-white border-b border-gray-200">
+          <Text className="text-xl font-bold text-gray-800">
+            Financial Report
+          </Text>
+        </View>
+        <FinanceReport />
+      </SafeAreaView>
       <BottomMenu />
     </KeyboardAvoidingView>
   );

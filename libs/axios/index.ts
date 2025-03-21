@@ -1,24 +1,22 @@
 import axios, {
-  AxiosRequestConfig,
-  AxiosResponse,
   AxiosError,
+  AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+import env from "../config/env.config";
 
-// Create an instance of Axios
-const apiClient = axios.create({
-  baseURL: "https://api.example.com", // Replace with your base URL
-  timeout: 5000, // Request timeout in milliseconds
-});
+// Configure axios defaults
+axios.defaults.baseURL = env.API_BASE_URL;
+axios.defaults.headers.post["Content-Type"] =
+  "application/x-www-form-urlencoded";
 
-// Request Interceptor
-apiClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+axios.interceptors.request.use(
+  async (config: InternalAxiosRequestConfig) => {
     // Add Authorization token to headers if available
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    // const token = await secureStore.getTokenSecure();
+    // if (token) {
+    //   config.headers.Authorization = `Bearer ${token}`;
+    // }
 
     console.log("Request Sent:", config);
     return config;
@@ -30,7 +28,7 @@ apiClient.interceptors.request.use(
 );
 
 // Response Interceptor
-apiClient.interceptors.response.use(
+axios.interceptors.response.use(
   (response: AxiosResponse) => {
     // Handle successful responses
     console.log("Response Received:", response);
@@ -44,7 +42,7 @@ apiClient.interceptors.response.use(
       if (error.response.status === 401) {
         console.error("Unauthorized! Redirecting to login...");
         // Perform actions like redirecting to login
-        window.location.href = "/login";
+        // navigation.navigate("VerifyPin" as never);
       } else if (error.response.status === 403) {
         console.error("Forbidden! You do not have access.");
       } else if (error.response.status === 500) {
@@ -61,4 +59,4 @@ apiClient.interceptors.response.use(
   }
 );
 
-export default apiClient;
+export default axios;

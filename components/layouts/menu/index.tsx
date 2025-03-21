@@ -39,12 +39,12 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
   const navigation = useNavigation();
   const { onOpen } = useAddBillModal();
   const pickImage = async () => {
-    // let result = await ImagePicker.launchImageLibraryAsync({
-    //   mediaTypes: ["images", "videos"],
-    //   allowsEditing: false,
-    //   quality: 1,
-    //   allowsMultipleSelection: true,
-    // });
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: false,
+      quality: 1,
+      allowsMultipleSelection: true,
+    });
     await onOpen();
   };
   return (
