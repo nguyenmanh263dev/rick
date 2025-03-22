@@ -1,6 +1,4 @@
 import React from "react";
-import * as ImagePicker from "expo-image-picker";
-// import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
   Keyboard,
@@ -14,24 +12,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useMutation } from "@tanstack/react-query";
-import { AuthService } from "../../services";
+import { useAuth } from "../../context/auth.context";
+
 export const Login = () => {
   const [email, setEmail] = useState("manhdihoc");
   const [password, setPassword] = useState("manhDiHoc@123");
-  const { navigate } = useNavigation();
-  const { mutateAsync: loginMutation } = useMutation({
-    mutationFn: ({ email, password }: { email: string; password: string }) =>
-      AuthService.login(email, password),
-  });
-  const handleLogin = async () => {
-    const res = await loginMutation({ email, password });
-    console.log(res);
-    navigate("Dashboard" as never);
-  };
-  console.log(process.env.API_BASE_URL);
 
+  const { login, isLoading } = useAuth();
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -72,10 +59,17 @@ export const Login = () => {
             </TouchableOpacity>
             <TouchableOpacity
               className="button button-primary mt-4"
-              onPress={handleLogin}
+              onPress={async () => {
+                try {
+                  await login({ email, password });
+                } catch (error) {
+                  console.error("Login failed:", error);
+                }
+              }}
+              disabled={isLoading}
             >
               <Text className="text-white text-center font-semibold">
-                Log In
+                {isLoading ? "Logging in..." : "Log In"}
               </Text>
             </TouchableOpacity>
 
@@ -93,3 +87,6 @@ const style = StyleSheet.create({
     padding: 16,
   },
 });
+function saveTokenSecure(arg0: string, token: any) {
+  throw new Error("Function not implemented.");
+}

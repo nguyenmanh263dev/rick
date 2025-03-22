@@ -1,6 +1,12 @@
 import { createContext, useContext, ReactNode, useRef, useState } from "react";
 import AddBill from "../components/add-bills";
 import DatePicker, { DatePickerProps } from "react-native-date-picker";
+import {
+  useForm,
+  FormProvider,
+  UseFormReturn,
+  FieldValues,
+} from "react-hook-form";
 
 // Common provider contain create property and create contact modals which have to use global
 
@@ -20,6 +26,14 @@ interface UseDisclosureProps<T> {
   onOpen: (value: T) => Promise<T | undefined>;
   onClose: (data?: T) => void;
 }
+
+interface FormModalProps<T extends FieldValues> {
+  isOpen: boolean;
+  onOpen: (defaultValues?: T) => Promise<T | undefined>;
+  onClose: (data?: T) => void;
+  formMethods?: UseFormReturn<T>;
+}
+
 interface CommonModalProps {
   addBill: {
     isOpen: boolean;
@@ -31,6 +45,7 @@ interface CommonModalProps {
     onOpen: (value: DateProps) => Promise<Date | undefined>;
     onClose: (value?: Date) => void;
   };
+  formModal: FormModalProps<any>;
 }
 
 const defaultUseDisclosure = <T,>(defaultValue?: T): UseDisclosureProps<T> => ({
@@ -50,6 +65,11 @@ export const CommonModalContext = createContext<CommonModalProps>({
     onOpen: () => new Promise<Date>(() => new Date()),
     onClose: () => {},
   },
+  formModal: {
+    isOpen: false,
+    onOpen: () => new Promise<any>(() => {}),
+    onClose: () => {},
+  },
 });
 
 export const useAddBillModal = () => {
@@ -57,8 +77,14 @@ export const useAddBillModal = () => {
   return context.addBill;
 };
 
+export const useFormModal = <T extends FieldValues>() => {
+  const context = useContext(CommonModalContext);
+  return context.formModal as FormModalProps<T>;
+};
+
 export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
   const [addBillModalVisible, setAddBillModalVisible] = useState(false);
+  const [formModalVisible, setFormModalVisible] = useState(false);
   const [selectDatePickerModalProps, setDatePickerModalProps] =
     useState<DateProps>({
       isOpen: false,
@@ -68,9 +94,14 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
   const promiseAddBillModal = useRef<{
     resolve: (value?: boolean) => void;
   } | null>(null);
+  const promiseFormModal = useRef<{
+    resolve: (value?: any) => void;
+  } | null>(null);
   const promiseDatePicker = useRef<{
     resolve: (value?: Date) => void;
   } | null>(null);
+
+  const formMethods = useForm();
 
   const handleOpenAddBillModal = () => {
     setAddBillModalVisible(true);
@@ -83,6 +114,23 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
       promiseAddBillModal.current.resolve(value);
     }
     setAddBillModalVisible(false);
+  };
+
+  const handleOpenFormModal = (defaultValues?: any) => {
+    if (defaultValues) {
+      formMethods.reset(defaultValues);
+    }
+    setFormModalVisible(true);
+    return new Promise<any>((resolve) => {
+      promiseFormModal.current = { resolve };
+    });
+  };
+
+  const handleFormModalClose = (data?: any) => {
+    if (promiseFormModal.current) {
+      promiseFormModal.current.resolve(data);
+    }
+    setFormModalVisible(false);
   };
 
   const handleOpenDatePickerModal = (dateProps: DateProps) => {
@@ -111,21 +159,29 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
           onOpen: handleOpenDatePickerModal,
           onClose: handleDatePickerClose,
         },
+        formModal: {
+          isOpen: formModalVisible,
+          onOpen: handleOpenFormModal,
+          onClose: handleFormModalClose,
+          formMethods,
+        },
       }}
     >
-      {children}
-      <AddBill isVisible={addBillModalVisible} onClose={handleAddBillClose} />
-      <DatePicker
-        modal
-        open={selectDatePickerModalProps.isOpen}
-        date={selectDatePickerModalProps.date || new Date()}
-        onConfirm={(date) => {
-          handleDatePickerClose(date);
-        }}
-        onCancel={() => {
-          handleDatePickerClose(undefined);
-        }}
-      />
+      <FormProvider {...formMethods}>
+        {children}
+        <AddBill isVisible={addBillModalVisible} onClose={handleAddBillClose} />
+        <DatePicker
+          modal
+          open={selectDatePickerModalProps.isOpen}
+          date={selectDatePickerModalProps.date || new Date()}
+          onConfirm={(date) => {
+            handleDatePickerClose(date);
+          }}
+          onCancel={() => {
+            handleDatePickerClose(undefined);
+          }}
+        />
+      </FormProvider>
     </CommonModalContext.Provider>
   );
 };

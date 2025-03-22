@@ -3,20 +3,22 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import env from "../config/env.config";
+import secureStore from "./secure-store";
 
 // Configure axios defaults
-axios.defaults.baseURL = env.API_BASE_URL;
+axios.defaults.baseURL = process.env.API_BASE_URL;
+// axios.defaults.baseURL = "http://localhost:2603";
+
 axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";
 
 axios.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     // Add Authorization token to headers if available
-    // const token = await secureStore.getTokenSecure();
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    const token = await secureStore.getTokenSecure();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
     console.log("Request Sent:", config);
     return config;

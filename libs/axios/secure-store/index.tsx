@@ -1,9 +1,9 @@
-import * as SecureStore from "expo-secure-store";
+import * as Keychain from "react-native-keychain";
 
 // Lưu token
 const saveTokenSecure = async (token: string) => {
   try {
-    await SecureStore.setItemAsync("authToken", token);
+    await Keychain.setGenericPassword("authToken", token);
     console.log("Token saved securely");
   } catch (error) {
     console.error("Error saving token securely:", error);
@@ -13,8 +13,17 @@ const saveTokenSecure = async (token: string) => {
 // Lấy token
 const getTokenSecure = async () => {
   try {
-    const token = await SecureStore.getItemAsync("authToken");
-    return token;
+    const credentials = await Keychain.getGenericPassword();
+    if (credentials) {
+      const token = credentials.password;
+      try {
+        console.log(JSON.parse(token || "{}"));
+      } catch (e) {
+        // Handle non-JSON tokens silently
+      }
+      return token;
+    }
+    return null;
   } catch (error) {
     console.error("Error retrieving token securely:", error);
     return null;
@@ -24,7 +33,7 @@ const getTokenSecure = async () => {
 // Xóa token
 const removeTokenSecure = async () => {
   try {
-    await SecureStore.deleteItemAsync("authToken");
+    await Keychain.resetGenericPassword();
     console.log("Token removed securely");
   } catch (error) {
     console.error("Error removing token securely:", error);
