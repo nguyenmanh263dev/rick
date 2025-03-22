@@ -20,6 +20,7 @@ import CreateCategoryModal from "./components/CreateCategoryModal";
 import { ICategory } from "../../../../types";
 import Modal from "../../../../components/modal";
 import { useCategory } from "../../../../hooks";
+import SwipeableToDelete from "../../../../components/swipable-to-delete";
 
 const CategoryDetail = () => {
   const navigation = useNavigation();
@@ -105,26 +106,29 @@ const CategoryDetail = () => {
             </Text>
           ) : (
             categories.map((category) => (
-              <TouchableOpacity
+              <SwipeableToDelete
                 key={category.id}
-                onPress={() => handleUpdateCategory(category)}
-                onLongPress={() => handleDeleteCategory(category)}
-                className="bg-white p-4 rounded-lg mb-3 shadow-sm"
+                onDelete={() => handleDeleteCategory(category)}
               >
-                <View className="flex-row items-center justify-between">
-                  {/* <View className="flex-row items-center">
-                  <View
-                    className="h-10 w-10 rounded-full mr-3"
-                    style={{ backgroundColor: category.color }}
-                  />
-                  <Text className="font-medium">{category.name}</Text>
-                </View> */}
-                  <View className="items-end">
-                    <Text className="font-bold">${50}</Text>
-                    <Text className="text-gray-500 text-xs">{50}%</Text>
+                <TouchableOpacity
+                  onPress={() => handleUpdateCategory(category)}
+                  onLongPress={() => handleDeleteCategory(category)}
+                  className="bg-white p-4 rounded-lg mb-3 shadow-sm"
+                >
+                  <View className="flex-row items-center justify-between">
+                    <View className="flex-row items-center">
+                      <View
+                        className="h-10 w-10 rounded-full mr-3"
+                        style={{ backgroundColor: category.color }}
+                      />
+                      <Text className="font-medium">{category.name}</Text>
+                    </View>
+                    <View className="items-end">
+                      <Text className="font-bold">${category.name}</Text>
+                      <Text className="text-gray-500 text-xs">{50}%</Text>
+                    </View>
                   </View>
-                </View>
-                {/* <View className="mt-3 bg-gray-200 h-2 rounded-full overflow-hidden">
+                  {/* <View className="mt-3 bg-gray-200 h-2 rounded-full overflow-hidden">
                 <View
                   className="h-full rounded-full"
                   style={{
@@ -133,7 +137,8 @@ const CategoryDetail = () => {
                   }}
                 />
               </View> */}
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </SwipeableToDelete>
             ))
           )}
         </ScrollView>

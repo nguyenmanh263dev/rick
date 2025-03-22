@@ -14,6 +14,7 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import { Ionicons } from "@expo/vector-icons";
 import { IBill } from "../../types";
 import { DatePicker } from "../form/date-picker";
+import { useCategory } from "../../hooks";
 
 const renderRightActions = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity onPress={onPress} className="justify-center px-4">
@@ -50,6 +51,11 @@ interface Props {
   item: IBill;
 }
 export const Bill = ({ onDelete, index, item, onChange }: Props) => {
+  const { data: categories } = useCategory();
+  const defaultCategories = categories?.map((category) => ({
+    label: category.id,
+    value: category.name,
+  }));
   return (
     <Swipeable
       renderRightActions={() =>

@@ -9,12 +9,10 @@ const CreateCategoryModal: React.FC = ({
   onSubmit,
 }: any) => {
   const [categoryName, setCategoryName] = useState("");
-  const [categoryColor, setCategoryColor] = useState("#000000");
 
   const handleSubmit = () => {
-    onSubmit({ name: categoryName, color: categoryColor });
+    onSubmit(categoryName);
     console.log("Category name:", categoryName);
-    console.log("Category color:", categoryColor);
     // Add code to create category
   };
 
