@@ -1,6 +1,6 @@
 import axios from "../libs/axios";
-import { IBill } from "../types";
-
+import { IBill, IBillCalendar } from "../types";
+import dayjs from "dayjs";
 // Get all category
 export const getBills = async (): Promise<IBill[]> => {
   const { data } = await axios.get("/bill");
@@ -39,26 +39,35 @@ export const getBillByImage = async (date: string): Promise<IBill[]> => {
 };
 
 export const uploadBillImage = async (file: any): Promise<IBill[]> => {
-  console.log("Uploading file:", file);
-
   const formData = new FormData();
-  // For React Native, we need to pass the file object directly as the second argument
-  // with the specific properties expected by the server
-  formData.append("no", "123");
-  // formData.append("file", {
-  //   uri: file.uri,
-  //   type: file.type || "image/jpeg",
-  //   name: file.name || "image.jpg",
-  // } as any);
-
-  console.log("FormData created:", formData);
+  formData.append("file", {
+    uri: file.uri,
+    type: file.type || "image/jpeg",
+    name: file.fileName || "image.jpg",
+  } as any);
 
   const { data } = await axios.post("/bill/get-by-image", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Accept: "application/json",
     },
   });
 
+  return data;
+};
+
+export const createBills = async (bills: IBill[]): Promise<IBill[]> => {
+  const { data } = await axios.post("/bill/insert-many", bills);
+  return data;
+};
+
+export const getBillsByDate = async (
+  date: Date,
+  params: any
+): Promise<IBillCalendar[]> => {
+  console.log(`/bill/calendar?date=${params.queryKey[1]}`);
+
+  const { data } = await axios.get(
+    `/bill/calendar?date=${dayjs(params.queryKey[1]).toISOString()}`
+  );
   return data;
 };

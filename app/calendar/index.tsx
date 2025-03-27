@@ -7,22 +7,12 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import BottomMenu from "../../components/layouts/menu";
+import { getBillsByDate } from "services/bill.service";
+import { useQuery } from "@tanstack/react-query";
+import { formatNumber } from "utils";
+import dayjs from "dayjs";
 
 const DAYS: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTHS: string[] = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
 
 // Interface for marked dates
 interface MarkedDate {
@@ -54,7 +44,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   markedDates = {},
   onMonthChange = () => {},
 }) => {
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+  const [currentMonth, setCurrentMonth] = useState(() => dayjs(new Date()));
 
   const handleDateSelect = useCallback(
     (date: Date) => {
@@ -63,49 +53,44 @@ export const Calendar: React.FC<CalendarProps> = ({
     [onSelectDate]
   );
 
+  const { data } = useQuery({
+    queryKey: ["bills", currentMonth.toDate()],
+    queryFn: (params) => getBillsByDate(currentMonth.toDate(), params),
+  });
+
+  const calendarData = useMemo(() => {
+    return (
+      data?.reduce((result, item) => {
+        return { ...result, [item.date as unknown as string]: item };
+      }, {}) || {}
+    );
+  }, [data]);
+
   const changeMonth = useCallback(
     (amount: number) => {
-      const newMonth = new Date(currentMonth);
-      newMonth.setMonth(newMonth.getMonth() + amount);
+      const newMonth = currentMonth.add(amount, "month");
       setCurrentMonth(newMonth);
-      onMonthChange(newMonth);
+      onMonthChange(newMonth.toDate());
     },
     [currentMonth, onMonthChange]
   );
 
   const generateMatrix = useCallback((): Array<Array<string | number>> => {
     const matrix: Array<Array<string | number>> = [];
-
-    // Create header row (Sun, Mon, Tue, etc)
     matrix[0] = DAYS;
 
-    // Get the first day of the month
-    const firstDay = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-      1
-    ).getDay();
+    const firstDay = currentMonth.startOf("month").day();
+    const daysInMonth = currentMonth.daysInMonth();
 
-    // Get the number of days in the month
-    const daysInMonth = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth() + 1,
-      0
-    ).getDate();
-
-    // Create the matrix
     let counter = 1;
     for (let row = 1; row < 7; row++) {
       matrix[row] = [];
       for (let col = 0; col < 7; col++) {
         if (row === 1 && col < firstDay) {
-          // Add empty spots before the first day of the month
           matrix[row][col] = "";
         } else if (counter > daysInMonth) {
-          // Add empty spots after the last day of the month
           matrix[row][col] = "";
         } else {
-          // Add the date
           matrix[row][col] = counter++;
         }
       }
@@ -120,14 +105,10 @@ export const Calendar: React.FC<CalendarProps> = ({
     (date: string | number): boolean => {
       if (!date || typeof date === "string") return true;
 
-      const fullDate = new Date(
-        currentMonth.getFullYear(),
-        currentMonth.getMonth(),
-        date
-      );
+      const fullDate = currentMonth.date(date as number);
 
-      if (minDate && fullDate < new Date(minDate)) return true;
-      if (maxDate && fullDate > new Date(maxDate)) return true;
+      if (minDate && fullDate.isBefore(dayjs(minDate))) return true;
+      if (maxDate && fullDate.isAfter(dayjs(maxDate))) return true;
 
       return false;
     },
@@ -138,18 +119,10 @@ export const Calendar: React.FC<CalendarProps> = ({
     (date: string | number): boolean => {
       if (!date || typeof date === "string") return false;
 
-      const fullDate = new Date(
-        currentMonth.getFullYear(),
-        currentMonth.getMonth(),
-        date
-      );
-      const selected = new Date(selectedDate);
+      const fullDate = currentMonth.date(date as number);
+      const selected = dayjs(selectedDate);
 
-      return (
-        fullDate.getDate() === selected.getDate() &&
-        fullDate.getMonth() === selected.getMonth() &&
-        fullDate.getFullYear() === selected.getFullYear()
-      );
+      return fullDate.isSame(selected, "day");
     },
     [currentMonth, selectedDate]
   );
@@ -158,13 +131,12 @@ export const Calendar: React.FC<CalendarProps> = ({
     (date: string | number): boolean => {
       if (!date || typeof date === "string") return false;
 
-      const dateString = `${currentMonth.getFullYear()}-${String(
-        currentMonth.getMonth() + 1
-      ).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+      const dateString = currentMonth.date(date as number).format("YYYY-MM-DD");
       return !!markedDates[dateString];
     },
     [currentMonth, markedDates]
   );
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -177,7 +149,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           </TouchableOpacity>
 
           <Text className="text-lg font-bold text-gray-800">
-            {MONTHS[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+            {currentMonth.format("MMMM YYYY")}
           </Text>
 
           <TouchableOpacity className="p-2" onPress={() => changeMonth(1)}>
@@ -189,13 +161,18 @@ export const Calendar: React.FC<CalendarProps> = ({
           {matrix.map((row, rowIndex) => (
             <View key={`row-${rowIndex}`} className="flex-row">
               {row.map((item, colIndex) => {
+                const fullDate = currentMonth
+                  .date(item as number)
+                  .format("DD/MM/YYYY");
+                const totalMonth = formatNumber(
+                  calendarData[fullDate]?.totalAmount
+                );
                 const isHeader = rowIndex === 0;
                 const isEmpty = item === "";
                 const disabled = isDateDisabled(item);
                 const selected = isDateSelected(item);
                 const marked = isDateMarked(item);
 
-                // Dynamically build className string
                 let cellClassName =
                   "flex-1 m-[1px] rounded-lg shadow p-1 bg-white";
 
@@ -203,13 +180,13 @@ export const Calendar: React.FC<CalendarProps> = ({
                   cellClassName += " border border-blue-500";
                 if (disabled && !isHeader) cellClassName += " opacity-30";
 
-                // Dynamically build text className string
                 let textClassName = "font-semibold";
                 if (isHeader) {
                   cellClassName += " bg-transparent text-center border-0";
                   textClassName += " text-center font-bold text-gray-500";
                 } else {
                   textClassName += " text-gray-800 ";
+                  cellClassName += " h-16";
                 }
                 if (selected)
                   textClassName += " text-white bg-blue-500 w-6 h-6 font-bold";
@@ -226,11 +203,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                         !disabled &&
                         typeof item === "number"
                       ) {
-                        const date = new Date(
-                          currentMonth.getFullYear(),
-                          currentMonth.getMonth(),
-                          item
-                        );
+                        const date = currentMonth.date(item).toDate();
                         handleDateSelect(date);
                       }
                     }}
@@ -238,11 +211,8 @@ export const Calendar: React.FC<CalendarProps> = ({
                     <Text className={textClassName}>{item}</Text>
                     {!isHeader && item && (
                       <>
-                        <Text className="text-sm text-green-400 text-right font-semibold">
-                          {"1M"}
-                        </Text>
-                        <Text className="text-sm text-red-400 text-right font-semibold">
-                          {"900k"}
+                        <Text className="text-sm text-red-400 text-right font-semibold mt-auto">
+                          {totalMonth}
                         </Text>
                       </>
                     )}

@@ -9,16 +9,10 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  getCategories,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-} from "../../../../services/category.service";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteCategory } from "../../../../services/category.service";
 import CreateCategoryModal from "./components/CreateCategoryModal";
 import { ICategory } from "../../../../types";
-import Modal from "../../../../components/modal";
 import { useCategory } from "../../../../hooks";
 import SwipeableToDelete from "../../../../components/swipable-to-delete";
 
@@ -49,8 +43,7 @@ const CategoryDetail = () => {
   };
 
   const handleUpdateCategory = (category: ICategory) => {
-    // TODO: Show update category modal
-    Alert.alert("Update Category", "This feature is coming soon!");
+    navigation.navigate("CategoryDetailForm" as never, { category });
   };
 
   const handleDeleteCategory = (category: ICategory) => {

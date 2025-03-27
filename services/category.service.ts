@@ -26,7 +26,7 @@ export const updateCategory = async (
   id: string,
   category: Partial<ICategory>
 ): Promise<ICategory> => {
-  const { data } = await axios.put(`/category/${id}`, category);
+  const { data } = await axios.patch(`/category/${id}`, category);
   return data;
 };
 

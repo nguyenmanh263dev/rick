@@ -7,6 +7,7 @@ import {
   UseFormReturn,
   FieldValues,
 } from "react-hook-form";
+import { IBill } from "types";
 
 // Common provider contain create property and create contact modals which have to use global
 
@@ -37,8 +38,8 @@ interface FormModalProps<T extends FieldValues> {
 interface CommonModalProps {
   addBill: {
     isOpen: boolean;
-    onOpen: () => Promise<boolean | undefined>;
-    onClose: (value?: boolean) => void;
+    onOpen: (bills: IBill[]) => Promise<IBill[] | undefined>;
+    onClose: (value?: IBill[]) => void;
   };
   datePicker: {
     isOpen: boolean;
@@ -57,7 +58,7 @@ const defaultUseDisclosure = <T,>(defaultValue?: T): UseDisclosureProps<T> => ({
 export const CommonModalContext = createContext<CommonModalProps>({
   addBill: {
     isOpen: false,
-    onOpen: () => new Promise<boolean>(() => {}),
+    onOpen: (bills: IBill[]) => Promise.resolve(bills),
     onClose: () => {},
   },
   datePicker: {
@@ -84,6 +85,7 @@ export const useFormModal = <T extends FieldValues>() => {
 
 export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
   const [addBillModalVisible, setAddBillModalVisible] = useState(false);
+  const [billData, setBillData] = useState<IBill[]>([]);
   const [formModalVisible, setFormModalVisible] = useState(false);
   const [selectDatePickerModalProps, setDatePickerModalProps] =
     useState<DateProps>({
@@ -92,7 +94,7 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
     });
 
   const promiseAddBillModal = useRef<{
-    resolve: (value?: boolean) => void;
+    resolve: (value?: IBill[]) => void;
   } | null>(null);
   const promiseFormModal = useRef<{
     resolve: (value?: any) => void;
@@ -103,17 +105,18 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
 
   const formMethods = useForm();
 
-  const handleOpenAddBillModal = () => {
+  const handleOpenAddBillModal = (bills: IBill[]) => {
+    setBillData(bills);
     setAddBillModalVisible(true);
-    return new Promise<boolean | undefined>((resolve) => {
+    return new Promise<IBill[] | undefined>((resolve) => {
       promiseAddBillModal.current = { resolve };
     });
   };
-  const handleAddBillClose = (value?: boolean) => {
+  const handleAddBillClose = (value?: IBill[]) => {
     if (promiseAddBillModal.current) {
       promiseAddBillModal.current.resolve(value);
     }
-    setAddBillModalVisible(false);
+    setBillData([]);
   };
 
   const handleOpenFormModal = (defaultValues?: any) => {
@@ -167,21 +170,25 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
         },
       }}
     >
-      <FormProvider {...formMethods}>
-        {children}
-        <AddBill isVisible={addBillModalVisible} onClose={handleAddBillClose} />
-        <DatePicker
-          modal
-          open={selectDatePickerModalProps.isOpen}
-          date={selectDatePickerModalProps.date || new Date()}
-          onConfirm={(date) => {
-            handleDatePickerClose(date);
-          }}
-          onCancel={() => {
-            handleDatePickerClose(undefined);
-          }}
+      {children}
+      {!!billData.length && (
+        <AddBill
+          data={billData}
+          isVisible={!!billData.length}
+          onClose={handleAddBillClose}
         />
-      </FormProvider>
+      )}
+      <DatePicker
+        modal
+        open={selectDatePickerModalProps.isOpen}
+        date={selectDatePickerModalProps.date || new Date()}
+        onConfirm={(date) => {
+          handleDatePickerClose(date);
+        }}
+        onCancel={() => {
+          handleDatePickerClose(undefined);
+        }}
+      />
     </CommonModalContext.Provider>
   );
 };

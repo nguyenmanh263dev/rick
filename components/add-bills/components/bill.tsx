@@ -12,9 +12,9 @@ import {
 import RNPickerSelect from "react-native-picker-select";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { Ionicons } from "@expo/vector-icons";
-import { IBill } from "../../types";
-import { DatePicker } from "../form/date-picker";
-import { useCategory } from "../../hooks";
+import { IBill } from "../../../types";
+import { DatePicker } from "../../form/date-picker";
+import { useCategory } from "../../../hooks";
 
 const renderRightActions = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity onPress={onPress} className="justify-center px-4">
@@ -53,9 +53,10 @@ interface Props {
 export const Bill = ({ onDelete, index, item, onChange }: Props) => {
   const { data: categories } = useCategory();
   const defaultCategories = categories?.map((category) => ({
-    label: category.id,
-    value: category.name,
+    label: category.name,
+    value: category.id,
   }));
+
   return (
     <Swipeable
       renderRightActions={() =>
@@ -69,25 +70,12 @@ export const Bill = ({ onDelete, index, item, onChange }: Props) => {
       <View className=" border-b py-4">
         <View className="flex justify-between items-center flex-row">
           <Text>{index + 1}</Text>
+          <Text>{item.amount}</Text>
+
           <RNPickerSelect
-            value={item.type}
-            onValueChange={(value) => {
-              onChange({ ...item, type: value });
-            }}
-            items={defaultIncomeOutcome}
-          />
-          <TextInput
-            className=" border-0 max-w-1/4"
-            value={item.amount.toString()}
-            keyboardType="numeric"
-            onChangeText={(text) => {
-              onChange({ ...item, amount: Number(text) });
-            }}
-          />
-          <RNPickerSelect
-            value={item.category}
-            onValueChange={(category) => {
-              onChange({ ...item, category });
+            value={item.categoryId}
+            onValueChange={(categoryId) => {
+              onChange({ ...item, categoryId });
             }}
             items={defaultCategories}
           />
@@ -102,6 +90,8 @@ export const Bill = ({ onDelete, index, item, onChange }: Props) => {
         <TextInput
           className="mt-4 border-0 max-w-1/4"
           value={item.description}
+          multiline={true}
+          numberOfLines={4}
           onChangeText={(text) => {
             onChange({ ...item, description: text });
           }}

@@ -14,13 +14,6 @@ import secureStore from "../../libs/axios/secure-store";
 
 export const Dashboard = () => {
   const { user } = useAuth();
-  const getTokenSecure = async () => {
-    const token = await secureStore.getTokenSecure();
-    console.log(123123, token);
-  };
-  useEffect(() => {
-    getTokenSecure();
-  });
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}

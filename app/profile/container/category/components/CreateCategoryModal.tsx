@@ -12,8 +12,6 @@ const CreateCategoryModal: React.FC = ({
 
   const handleSubmit = () => {
     onSubmit(categoryName);
-    console.log("Category name:", categoryName);
-    // Add code to create category
   };
 
   return (

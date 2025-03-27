@@ -4,5 +4,11 @@ export interface IBill {
   amount: number;
   date: Date;
   description: string;
-  category: string;
+  categoryId: number;
+}
+
+export interface IBillCalendar {
+  totalAmount: number;
+  date: string;
+  items: IBill;
 }

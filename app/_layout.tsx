@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Calendar } from "./calendar";
 import Wallet from "./wallet";
 import CategoryDetail from "./profile/container/category";
+import CategoryDetailForm from "./profile/container/category/components/CategoryDetailForm";
 import ReportDetail from "./profile/container/report";
 import { AuthProvider } from "../context/auth.context";
 
@@ -77,6 +78,11 @@ export default function RootLayout() {
                   <Stack.Screen
                     name="CategoryDetail"
                     component={CategoryDetail}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="CategoryDetailForm"
+                    component={CategoryDetailForm}
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen

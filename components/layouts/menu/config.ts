@@ -1,26 +1,31 @@
-export const menuItems = [
+import { RootStackParamList } from "../../../types/navigation.types";
+
+export type MenuItemType = {
+  icon: "home" | "calendar" | "wallet" | "person";
+  label: string;
+  path: keyof RootStackParamList;
+  onPress?: () => void;
+};
+
+export const menuItems: MenuItemType[] = [
   {
     icon: "home",
     label: "Dashboard",
-    onPress: () => console.log("Home pressed"),
-    path: "/dashboard",
+    path: "Dashboard",
   },
   {
     icon: "calendar",
     label: "Calendar",
-    path: "/calendar",
-    onPress: () => console.log("Profile pressed"),
+    path: "Calendar",
   },
   {
     icon: "wallet",
-    label: "Wallet",
-    path: "/wallet",
-    onPress: () => console.log("Settings pressed"),
+    label: "Debt & Loan",
+    path: "Wallet",
   },
   {
     icon: "person",
     label: "Profile",
-    path: "/profile",
-    onPress: () => console.log("Help pressed"),
+    path: "Profile",
   },
 ];

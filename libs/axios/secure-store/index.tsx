@@ -4,7 +4,6 @@ import * as Keychain from "react-native-keychain";
 const saveTokenSecure = async (token: string) => {
   try {
     await Keychain.setGenericPassword("authToken", token);
-    console.log("Token saved securely");
   } catch (error) {
     console.error("Error saving token securely:", error);
   }
@@ -16,11 +15,7 @@ const getTokenSecure = async () => {
     const credentials = await Keychain.getGenericPassword();
     if (credentials) {
       const token = credentials.password;
-      try {
-        console.log(JSON.parse(token || "{}"));
-      } catch (e) {
-        // Handle non-JSON tokens silently
-      }
+
       return token;
     }
     return null;
@@ -34,7 +29,6 @@ const getTokenSecure = async () => {
 const removeTokenSecure = async () => {
   try {
     await Keychain.resetGenericPassword();
-    console.log("Token removed securely");
   } catch (error) {
     console.error("Error removing token securely:", error);
   }
