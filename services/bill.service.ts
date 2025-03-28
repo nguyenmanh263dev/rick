@@ -64,8 +64,6 @@ export const getBillsByDate = async (
   date: Date,
   params: any
 ): Promise<IBillCalendar[]> => {
-  console.log(`/bill/calendar?date=${params.queryKey[1]}`);
-
   const { data } = await axios.get(
     `/bill/calendar?date=${dayjs(params.queryKey[1]).toISOString()}`
   );

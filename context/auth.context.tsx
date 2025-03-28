@@ -27,11 +27,7 @@ export const AuthProvider = ({ children }: { children: React.JSX.Element }) => {
   const queryClient = useQueryClient();
   const { navigate } = useNavigation();
 
-  const {
-    data,
-    isIdle: isLoading,
-    mutateAsync: loginMutation,
-  } = useMutation({
+  const { mutateAsync: loginMutation } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       AuthService.login(email, password),
   });
@@ -42,13 +38,14 @@ export const AuthProvider = ({ children }: { children: React.JSX.Element }) => {
       AuthService.getMyInfo()
         .then((res) => {
           navigate("Dashboard" as never);
-          return res.data;
+          return res;
         })
         .catch((e) => {
           navigate("Login" as never);
           return e;
         }),
   });
+
   const login = async ({
     email,
     password,

@@ -1,4 +1,6 @@
 import { DatePicker } from "components/form/date-picker";
+import BottomMenu from "components/layouts/menu";
+import TopTabs from "components/top-tabs";
 import { useLoan } from "hooks/useLoan";
 import React, { useState } from "react";
 import {
@@ -68,40 +70,17 @@ const Wallet = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
+    <SafeAreaView className="flex-1 bg-white">
       <View className="p-4">
         <Text className="text-2xl font-bold mb-4">Wallet</Text>
-
-        <View className="flex-row mb-4">
-          <TouchableOpacity
-            className={`flex-1 p-3 ${
-              activeTab === LOAN_TYPE.LOAN ? "bg-blue-500" : "bg-gray-300"
-            }`}
-            onPress={() => setActiveTab(LOAN_TYPE.LOAN)}
-          >
-            <Text
-              className={`text-center ${
-                activeTab === LOAN_TYPE.LOAN ? "text-white" : "text-gray-700"
-              }`}
-            >
-              Loans
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className={`flex-1 p-3 ${
-              activeTab === LOAN_TYPE.DEBT ? "bg-blue-500" : "bg-gray-300"
-            }`}
-            onPress={() => setActiveTab(LOAN_TYPE.DEBT)}
-          >
-            <Text
-              className={`text-center ${
-                activeTab === LOAN_TYPE.DEBT ? "text-white" : "text-gray-700"
-              }`}
-            >
-              Rents
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TopTabs
+          options={[
+            { value: LOAN_TYPE.LOAN, label: "Loans" },
+            { value: LOAN_TYPE.DEBT, label: "Debts" },
+          ]}
+          value={activeTab}
+          onChange={(value) => setActiveTab(value)}
+        />
 
         <TouchableOpacity
           className="bg-blue-500 p-3 rounded-lg mb-4"
@@ -185,6 +164,7 @@ const Wallet = () => {
           </View>
         </Modal>
       </View>
+      <BottomMenu />
     </SafeAreaView>
   );
 };

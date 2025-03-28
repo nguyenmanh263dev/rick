@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,11 @@ import { getBillsByDate } from "services/bill.service";
 import { useQuery } from "@tanstack/react-query";
 import { formatNumber } from "utils";
 import dayjs from "dayjs";
+// Import BottomSheet from the package
+import BottomSheet from "@gorhom/bottom-sheet";
+import { BottomSheetMethods } from "node_modules/@gorhom/bottom-sheet/lib/typescript/types";
+import { IBill } from "types";
+import ListBills from "./components/list-bills";
 
 const DAYS: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -45,6 +50,15 @@ export const Calendar: React.FC<CalendarProps> = ({
   onMonthChange = () => {},
 }) => {
   const [currentMonth, setCurrentMonth] = useState(() => dayjs(new Date()));
+  // Add state for selected date items
+  const [billsOfDay, setBillsOfDay] = useState<IBill[]>([]);
+  const [selectedDateTitle, setSelectedDateTitle] = useState("");
+
+  // Create a ref for the bottom sheet
+  const bottomSheetRef = useRef<BottomSheetMethods>(null);
+
+  // Define snap points for the bottom sheet
+  const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
 
   const handleDateSelect = useCallback(
     (date: Date) => {
@@ -65,6 +79,17 @@ export const Calendar: React.FC<CalendarProps> = ({
       }, {}) || {}
     );
   }, [data]);
+
+  // Add function to handle calendar item click
+  const handleCalendarItemClick = useCallback(
+    (date: string, formattedDate: string) => {
+      const dateData = calendarData[date];
+      console.log(444, dateData);
+      setBillsOfDay(calendarData[date]?.items || []);
+      // Open the bottom sheet
+    },
+    [calendarData]
+  );
 
   const changeMonth = useCallback(
     (amount: number) => {
@@ -205,6 +230,11 @@ export const Calendar: React.FC<CalendarProps> = ({
                       ) {
                         const date = currentMonth.date(item).toDate();
                         handleDateSelect(date);
+                        // Add call to handle calendar item click with formatted date
+                        const formattedDate = currentMonth
+                          .date(item)
+                          .format("MMMM D, YYYY");
+                        handleCalendarItemClick(fullDate, formattedDate);
                       }
                     }}
                   >
@@ -223,6 +253,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           ))}
         </View>
       </View>
+      <ListBills bills={billsOfDay} />
       <BottomMenu />
     </KeyboardAvoidingView>
   );

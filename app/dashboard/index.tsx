@@ -10,7 +10,6 @@ import {
 import BottomMenu from "../../components/layouts/menu";
 import FinanceReport from "../../components/FinanceReport";
 import { useAuth } from "../../context/auth.context";
-import secureStore from "../../libs/axios/secure-store";
 
 export const Dashboard = () => {
   const { user } = useAuth();
@@ -19,11 +18,12 @@ export const Dashboard = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1 bg-gray-100 relative h-screen"
     >
-      <SafeAreaView className="flex-1">
-        <View className="px-4 py-3 bg-white border-b border-gray-200">
+      <SafeAreaView className="flex-1 bg-white">
+        <View className="p-4 border-b border-gray-200">
           <Text className="text-xl font-bold text-gray-800">
-            Financial Report {user?.username}
+            Hello {user?.username}
           </Text>
+          <Text className="text-sm text-gray-600">Welcome back !</Text>
         </View>
         <FinanceReport />
       </SafeAreaView>

@@ -17,7 +17,7 @@ const getRandomColor = (): string => {
   ];
 
   const randomIndex = Math.floor(Math.random() * colors.length);
-  return colors[randomIndex];
+  return colors[randomIndex] || "#FF6633";
 };
 
 export const useCategory = () => {
@@ -56,6 +56,16 @@ export const useCategory = () => {
         return res;
       }),
   });
+
+  const getCategoryLabel = (id: number) => {
+    const category = data?.find((category) => category.id === id);
+    return category?.name || "";
+  };
+
+  const getCategoryColor = (id: number) => {
+    const category = data?.find((category) => category.id === id);
+    return category?.color || "";
+  };
   return {
     data: data || [],
     isLoading,
@@ -63,5 +73,7 @@ export const useCategory = () => {
     createCategory: createCategoryMutate,
     updateCategory: updateCategoryMutate,
     deleteCategory: deleteCategoryMutate,
+    getCategoryLabel,
+    getCategoryColor,
   };
 };
