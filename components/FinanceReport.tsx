@@ -10,7 +10,9 @@ import { LineChart, ProgressChart } from "react-native-chart-kit";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { formatNumber } from "utils";
-
+import { useQuery } from "@tanstack/react-query";
+import { ReportService } from "services";
+import dayjs from "dayjs";
 const screenWidth = Dimensions.get("window").width;
 
 // Weekly activity data (for the line chart)
@@ -61,8 +63,34 @@ const chartConfig = {
 };
 
 const FinanceReport = () => {
+  const today = dayjs().toISOString();
   const navigation = useNavigation();
+  const { data: generalReport } = useQuery(
+    {
+      queryKey: ["generalReport"],
+      queryFn: () => ReportService.getGeneralReport(today),
+    } // replace 'date' with the actual date parameter
+  );
+  console.log(generalReport);
 
+  const {
+    data: targetReport,
+    isLoading: targetReportLoading,
+    error: targetReportError,
+  } = useQuery({
+    queryKey: ["targetReport"],
+    queryFn: () => ReportService.getTargetReport(today), // replace 'date' with the actual date parameter
+  });
+
+  const {
+    data: report,
+    isLoading: reportLoading,
+    error: reportError,
+  } = useQuery({
+    queryKey: ["report"],
+    queryFn: () =>
+      ReportService.getReport({ fromDate: "fromDate", toDate: "toDate" }), // replace 'fromDate' and 'toDate' with the actual date parameters
+  });
   const listItems = [
     {
       title: "Category",
@@ -108,7 +136,7 @@ const FinanceReport = () => {
             </View>
             <View className="flex-row items-baseline">
               <Text className="text-white text-2xl font-bold">
-                {card.value}
+                {formatNumber(generalReport?.currentMonthTotalAmount)}
               </Text>
               <Text className="text-white text-xs ml-1 opacity-80">
                 Trong tháng
@@ -116,7 +144,7 @@ const FinanceReport = () => {
             </View>
             <View className="flex-row items-baseline opacity-50">
               <Text className="text-white text-xl font-bold">
-                {card.lastValue}
+                {formatNumber(generalReport?.previousMonthTotalAmount)}
               </Text>
               <Text className="text-white text-xs ml-1 opacity-80">
                 Tháng trước
@@ -139,7 +167,8 @@ const FinanceReport = () => {
           </View>
           <View className="flex-row items-baseline">
             <Text className="text-white text-xl font-bold">
-              {formatNumber(18000000)} / {formatNumber(20000000)}
+              {formatNumber(generalReport?.currentMonthTotalAmount)} /{" "}
+              {formatNumber(20000000)}
             </Text>
           </View>
         </View>

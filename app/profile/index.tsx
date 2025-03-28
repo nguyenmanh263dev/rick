@@ -1,6 +1,11 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import BottomMenu from "components/layouts/menu";
 import { useNavigation } from "@react-navigation/native";
@@ -29,12 +34,9 @@ export const Profile = () => {
     navigation.navigate(route as never);
   };
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
+    <KeyboardAvoidingView className="flex-1 bg-white p-4">
       <ScrollView>
         <View className="mb-5">
-          <Text className="text-lg font-bold mb-3 px-1">
-            Financial Management
-          </Text>
           {listItems.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -69,6 +71,6 @@ export const Profile = () => {
         </View>
       </ScrollView>
       <BottomMenu />
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };

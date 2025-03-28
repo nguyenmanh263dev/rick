@@ -84,7 +84,6 @@ export const Calendar: React.FC<CalendarProps> = ({
   const handleCalendarItemClick = useCallback(
     (date: string, formattedDate: string) => {
       const dateData = calendarData[date];
-      console.log(444, dateData);
       setBillsOfDay(calendarData[date]?.items || []);
       // Open the bottom sheet
     },

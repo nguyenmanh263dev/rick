@@ -11,8 +11,6 @@ const login = async (email: string, password: string) => {
 
 const getMyInfo = async () => {
   const { data } = await axios.get("/user/me");
-  console.log(44, data);
-
   return data;
 };
 export { login, getMyInfo };

@@ -2,9 +2,9 @@
  * Format number with K, M, B suffixes with 2 decimal places
  * Example: 1000 -> "1.00K", 1500 -> "1.50K", 1000000 -> "1.00M"
  */
-export const formatNumber = (num: number): string => {
+export const formatNumber = (num?: number): string => {
   if (!num || typeof num !== "number") {
-    return "";
+    return "0";
   }
 
   const formatter = new Intl.NumberFormat("en-US", {

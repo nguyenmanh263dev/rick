@@ -5,4 +5,5 @@ export interface ILoan {
   type: LOAN_TYPE;
   amount: number;
   title: string;
+  duaTo: Date;
 }
