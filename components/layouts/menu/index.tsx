@@ -22,7 +22,7 @@ const CustomAddButton = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className=" absolute left-1/2 bottom-1/2 -translate-x-1/2 z-10 bg-yellow-400 w-16 h-16 rounded-full flex items-center justify-center border-4 border-white"
+      className=" absolute left-1/2 bottom-1/2 -translate-x-1/2 z-10 bg-blue-400 w-16 h-16 rounded-full flex items-center justify-center border-4 border-white"
       style={{ top: -30 }}
     >
       {children}

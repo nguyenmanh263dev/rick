@@ -13,28 +13,20 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ILoan, LOAN_TYPE } from "types";
+import AddLoan from "./components/add-loan";
 
-const defaultLoan = {
-  type: LOAN_TYPE.LOAN,
-  amount: 0,
-  title: "",
-  duaTo: new Date(),
-};
 const Wallet = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<LOAN_TYPE>(LOAN_TYPE.LOAN);
-  const [formData, setFormData] = useState<Partial<ILoan>>(defaultLoan);
   const { debts, loans, createLoan } = useLoan();
 
   const showModal = (type: LOAN_TYPE) => {
-    setFormData({ ...defaultLoan, type });
     setIsModalVisible(true);
   };
 
-  const handleSubmit = async () => {
-    await createLoan(formData as ILoan);
+  const handleSubmit = async (formData: Partial<ILoan>) => {
+    await createLoan(formData);
     setIsModalVisible(false);
   };
 
@@ -76,63 +68,14 @@ const Wallet = () => {
             </View>
           ))}
         </ScrollView>
-
-        <Modal
-          visible={isModalVisible}
-          animationType="slide"
-          transparent={true}
-        >
-          <View className="flex-1 justify-center items-center bg-black/50">
-            <View className="bg-white p-6 rounded-lg w-5/6">
-              <Text className="text-xl font-bold mb-4">
-                Request {formData.type === LOAN_TYPE.LOAN ? "Loan" : "Rent"}
-              </Text>
-
-              <TextInput
-                className="border border-gray-300 p-2 rounded-lg mb-3"
-                placeholder="Amount"
-                keyboardType="numeric"
-                value={formData.amount?.toString()}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, amount: Number(text) })
-                }
-              />
-
-              <TextInput
-                className="border border-gray-300 p-2 rounded-lg mb-3"
-                placeholder="Title"
-                value={formData.title}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, title: text })
-                }
-              />
-
-              <DatePicker
-                onValueChange={(date) => {
-                  if (!date) return;
-                  setFormData({ ...formData, duaTo: date });
-                }}
-                date={formData.duaTo}
-              />
-
-              <View className="flex-row justify-end space-x-2">
-                <TouchableOpacity
-                  className="bg-gray-300 p-3 rounded-lg flex-1 mr-2"
-                  onPress={() => setIsModalVisible(false)}
-                >
-                  <Text className="text-center">Cancel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  className="bg-blue-500 p-3 rounded-lg flex-1"
-                  onPress={handleSubmit}
-                >
-                  <Text className="text-white text-center">Submit</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
       </View>
+      {isModalVisible && (
+        <AddLoan
+          onClose={() => setIsModalVisible(false)}
+          onSubmit={handleSubmit}
+          type={activeTab}
+        />
+      )}
       <BottomMenu />
     </KeyboardAvoidingView>
   );

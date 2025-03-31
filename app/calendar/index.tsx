@@ -16,6 +16,8 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { BottomSheetMethods } from "node_modules/@gorhom/bottom-sheet/lib/typescript/types";
 import { IBill } from "types";
 import ListBills from "./components/list-bills";
+import { set, get } from "lodash";
+import { FORMAT_DATE } from "utils/date";
 
 const DAYS: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -82,10 +84,9 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   // Add function to handle calendar item click
   const handleCalendarItemClick = useCallback(
-    (date: string, formattedDate: string) => {
-      const dateData = calendarData[date];
-      setBillsOfDay(calendarData[date]?.items || []);
-      // Open the bottom sheet
+    (date: string) => {
+      const items = get(calendarData, `${date}.items`);
+      setBillsOfDay(items || []);
     },
     [calendarData]
   );
@@ -101,7 +102,6 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   const generateMatrix = useCallback((): Array<Array<string | number>> => {
     const matrix: Array<Array<string | number>> = [];
-    matrix[0] = DAYS;
 
     const firstDay = currentMonth.startOf("month").day();
     const daysInMonth = currentMonth.daysInMonth();
@@ -111,11 +111,11 @@ export const Calendar: React.FC<CalendarProps> = ({
       matrix[row] = [];
       for (let col = 0; col < 7; col++) {
         if (row === 1 && col < firstDay) {
-          matrix[row][col] = "";
+          set(matrix, [row, col], "");
         } else if (counter > daysInMonth) {
-          matrix[row][col] = "";
+          set(matrix, [row, col], "");
         } else {
-          matrix[row][col] = counter++;
+          set(matrix, [row, col], counter++);
         }
       }
     }
@@ -182,36 +182,39 @@ export const Calendar: React.FC<CalendarProps> = ({
         </View>
 
         <View>
+          <View className="flex-row">
+            {DAYS.map((day) => (
+              <View
+                key={`col-${day}`}
+                className="flex-1 m-[1px] px-1 py-2 text-center bg-white"
+              >
+                <Text className="font-bold text-gray-500 text-center">
+                  {day}
+                </Text>
+              </View>
+            ))}
+          </View>
           {matrix.map((row, rowIndex) => (
             <View key={`row-${rowIndex}`} className="flex-row">
               {row.map((item, colIndex) => {
                 const fullDate = currentMonth
                   .date(item as number)
-                  .format("DD/MM/YYYY");
+                  .format(FORMAT_DATE);
                 const totalMonth = formatNumber(
-                  calendarData[fullDate]?.totalAmount
+                  get(calendarData, `${fullDate}.totalAmount`) || 0
                 );
-                const isHeader = rowIndex === 0;
-                const isEmpty = item === "";
                 const disabled = isDateDisabled(item);
                 const selected = isDateSelected(item);
                 const marked = isDateMarked(item);
 
                 let cellClassName =
-                  "flex-1 m-[1px] rounded-lg shadow p-1 bg-white";
+                  "flex-1 m-[1px] rounded-lg shadow-sm p-1 bg-white h-16";
 
                 if (marked && !selected)
                   cellClassName += " border border-blue-500";
-                if (disabled && !isHeader) cellClassName += " opacity-30";
+                if (disabled) cellClassName += " opacity-30";
 
-                let textClassName = "font-semibold";
-                if (isHeader) {
-                  cellClassName += " bg-transparent text-center border-0";
-                  textClassName += " text-center font-bold text-gray-500";
-                } else {
-                  textClassName += " text-gray-800 ";
-                  cellClassName += " h-16";
-                }
+                let textClassName = "font-semibold text-gray-800 ";
                 if (selected)
                   textClassName += " text-white bg-blue-500 w-6 h-6 font-bold";
 
@@ -219,31 +222,20 @@ export const Calendar: React.FC<CalendarProps> = ({
                   <TouchableOpacity
                     key={`col-${colIndex}`}
                     className={cellClassName}
-                    disabled={isEmpty || disabled || isHeader}
+                    disabled={disabled}
                     onPress={() => {
-                      if (
-                        !isEmpty &&
-                        !isHeader &&
-                        !disabled &&
-                        typeof item === "number"
-                      ) {
+                      if (!disabled && typeof item === "number") {
                         const date = currentMonth.date(item).toDate();
                         handleDateSelect(date);
-                        // Add call to handle calendar item click with formatted date
-                        const formattedDate = currentMonth
-                          .date(item)
-                          .format("MMMM D, YYYY");
-                        handleCalendarItemClick(fullDate, formattedDate);
+                        handleCalendarItemClick(fullDate);
                       }
                     }}
                   >
                     <Text className={textClassName}>{item}</Text>
-                    {!isHeader && item && (
-                      <>
-                        <Text className="text-sm text-red-400 text-right font-semibold mt-auto">
-                          {totalMonth}
-                        </Text>
-                      </>
+                    {!disabled && item && totalMonth !== "0" && (
+                      <Text className="text-sm text-blue-400 text-right font-semibold mt-auto">
+                        {totalMonth}
+                      </Text>
                     )}
                   </TouchableOpacity>
                 );

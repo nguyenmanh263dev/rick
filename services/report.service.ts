@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IReportGeneral } from "types";
+import { IReportByCategory, IReportByPeriod, IReportGeneral } from "types";
 
 const url = "/report/";
 const getGeneralReport = async (date: string) => {
@@ -21,4 +21,26 @@ const getReport = async (params: { fromDate: string; toDate: string }) => {
   return data;
 };
 
-export { getGeneralReport, getTargetReport, getReport };
+const getReportByCategory = async (
+  date: string
+): Promise<IReportByCategory[]> => {
+  const { data } = await axios.get(url + "by-category", {
+    params: { date },
+  });
+  return data;
+};
+
+const getReportByPeriod = async (params: {
+  fromDate: string;
+  toDate: string;
+}): Promise<IReportByPeriod[]> => {
+  const { data } = await axios.get(url + "by-period", { params });
+  return data;
+};
+export {
+  getGeneralReport,
+  getTargetReport,
+  getReport,
+  getReportByCategory,
+  getReportByPeriod,
+};

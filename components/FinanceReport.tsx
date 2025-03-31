@@ -6,13 +6,20 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { LineChart, ProgressChart } from "react-native-chart-kit";
+import {
+  BarChart,
+  BarChartData,
+  PieChart,
+  ProgressChart,
+} from "react-native-chart-kit";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { formatNumber } from "utils";
 import { useQuery } from "@tanstack/react-query";
 import { ReportService } from "services";
 import dayjs from "dayjs";
+import { useCategory } from "hooks";
+import { FORMAT_MONTH_YEAR, formatDate } from "utils/date";
 const screenWidth = Dimensions.get("window").width;
 
 // Weekly activity data (for the line chart)
@@ -63,7 +70,12 @@ const chartConfig = {
 };
 
 const FinanceReport = () => {
+  const { getCategoryLabel, getCategoryColor } = useCategory();
   const today = dayjs().toISOString();
+  const periodDays = {
+    fromDate: dayjs().subtract(7, "day").toISOString(),
+    toDate: today,
+  };
   const navigation = useNavigation();
   const { data: generalReport } = useQuery(
     {
@@ -71,7 +83,6 @@ const FinanceReport = () => {
       queryFn: () => ReportService.getGeneralReport(today),
     } // replace 'date' with the actual date parameter
   );
-  console.log(generalReport);
 
   const {
     data: targetReport,
@@ -79,34 +90,33 @@ const FinanceReport = () => {
     error: targetReportError,
   } = useQuery({
     queryKey: ["targetReport"],
-    queryFn: () => ReportService.getTargetReport(today), // replace 'date' with the actual date parameter
+    queryFn: () => ReportService.getReportByPeriod(periodDays), // replace 'date' with the actual date parameter
+    initialData: [],
   });
+  console.log(44, targetReport);
 
-  const {
-    data: report,
-    isLoading: reportLoading,
-    error: reportError,
-  } = useQuery({
-    queryKey: ["report"],
-    queryFn: () =>
-      ReportService.getReport({ fromDate: "fromDate", toDate: "toDate" }), // replace 'fromDate' and 'toDate' with the actual date parameters
+  const periodData: BarChartData = targetReport?.reduce(
+    (result, item) => {
+      const date = formatDate(item.date, { outputFormat: FORMAT_MONTH_YEAR });
+      result.labels.push(date);
+      result.datasets[0]?.data.push(item.totalAmount);
+
+      return result;
+    },
+    {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+        },
+      ],
+    } as BarChartData
+  );
+
+  const { data: reportByCategory } = useQuery({
+    queryKey: ["report-by-category"],
+    queryFn: () => ReportService.getReportByCategory(today), // replace 'fromDate' and 'toDate' with the actual date parameters
   });
-  const listItems = [
-    {
-      title: "Category",
-      icon: "list-outline",
-      description: "View expenses by category",
-      color: "#4da1ff", // Blue
-      route: "CategoryDetail",
-    },
-    {
-      title: "Report",
-      icon: "document-text-outline",
-      description: "Financial reports and analytics",
-      color: "#4cd97b", // Green
-      route: "ReportDetail",
-    },
-  ];
 
   const navigateToDetail = (route: string) => {
     navigation.navigate(route as never);
@@ -123,13 +133,6 @@ const FinanceReport = () => {
             className="w-[48%] p-4 rounded-xl mb-4"
           >
             <View className="flex-row justify-between items-center mb-4">
-              {/* <View className="h-12 w-12 bg-white rounded-full items-center justify-center">
-                <Ionicons
-                  name={card.icon as any}
-                  size={20}
-                  color={card.bgColor}
-                />
-              </View> */}
               <View>
                 <Text className="text-white font-medium">{card.title}</Text>
               </View>
@@ -173,36 +176,34 @@ const FinanceReport = () => {
           </View>
         </View>
       </View>
-
       <View className="mb-5 bg-white rounded-lg shadow-sm">
-        <LineChart
-          data={{
-            // Get last 10 days
-            labels: Array.from({ length: 10 }, (_, i) => {
-              const date = new Date();
-              date.setDate(date.getDate() - (9 - i));
-              return date.getDate().toString();
-            }),
-            datasets: [
-              {
-                data: Array.from(
-                  { length: 10 },
-                  () => Math.floor(Math.random() * 3000) + 1000 // Sample data between 1000-4000
-                ),
-                color: (opacity = 1) => `rgba(75, 192, 192, ${opacity})`,
-                strokeWidth: 2,
-              },
-              {
-                data: Array.from(
-                  { length: 10 },
-                  () => Math.floor(Math.random() * 3000) + 1000 // Sample data between 1000-4000
-                ),
-                color: (opacity = 1) => `rgba(179, 102, 155, ${opacity})`,
-                strokeWidth: 2,
-              },
-            ],
-            legend: ["Online", "Offline"],
-          }}
+        <Text className="px-4 py-2 font-bold">Chi tiết theo danh mục</Text>
+        <View className="flex items-center">
+          {reportByCategory && (
+            <PieChart
+              chartConfig={chartConfig}
+              width={screenWidth - 40}
+              height={220}
+              data={
+                reportByCategory?.map((category) => ({
+                  name: getCategoryLabel(category.categoryId),
+                  amount: Number(category.totalAmount),
+                  population: Number(category.totalAmount),
+                  color: getCategoryColor(category.categoryId),
+
+                  legendFontColor: "#7F7F7F",
+                  legendFontSize: 15,
+                })) || []
+              }
+              backgroundColor="transparent"
+              accessor={"population"}
+            />
+          )}
+        </View>
+      </View>
+      <View className="mb-5 bg-white rounded-lg shadow-sm">
+        <BarChart
+          data={periodData}
           width={screenWidth - 48}
           height={220}
           chartConfig={{
@@ -213,10 +214,7 @@ const FinanceReport = () => {
               strokeWidth: 1,
             },
           }}
-          bezier
-          withDots={false}
           withInnerLines={false}
-          withOuterLines={true}
           style={{
             borderRadius: 16,
           }}

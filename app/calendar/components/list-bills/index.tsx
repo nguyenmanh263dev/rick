@@ -10,7 +10,8 @@ const ListBills = ({ bills }: { bills: IBill[] }) => {
   const { getCategoryLabel, getCategoryColor } = useCategory();
   const renderBillItem = ({ item }: { item: IBill }) => (
     <View
-      className={`bg-white rounded-lg p-4 mb-3 flex-row justify-between items-center shadow-sm`}
+      className={`bg-white rounded-lg p-4 mb-3 flex-row justify-between items-center shadow-sm border-l-4 `}
+      style={{ borderLeftColor: getCategoryColor(item.categoryId) }}
     >
       <View className="flex-1">
         <Text className="text-lg font-semibold text-gray-800 mb-1">
@@ -24,11 +25,6 @@ const ListBills = ({ bills }: { bills: IBill[] }) => {
         <Text className="text-lg font-bold text-gray-800 mb-1">
           {formatCompactNumber(item.amount)}
         </Text>
-        <View
-          className={`w-2.5 h-2.5 rounded-full 
-          `}
-          style={{ backgroundColor: getCategoryColor(item.categoryId) }}
-        />
       </View>
     </View>
   );
