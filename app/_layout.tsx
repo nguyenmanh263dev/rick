@@ -15,6 +15,7 @@ import CategoryDetail from "./profile/container/category";
 import CategoryDetailForm from "./profile/container/category/components/CategoryDetailForm";
 import ReportDetail from "./profile/container/report";
 import { AuthProvider } from "../context/auth.context";
+import { ToastProvider } from "react-native-toast-notifications";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,80 +23,82 @@ export default function RootLayout() {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <CommonModalProvider>
-            <NavigationContainer>
-              <AuthProvider>
-                <Stack.Navigator>
-                  <Stack.Screen
-                    name="Login"
-                    component={Login}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Dashboard"
-                    component={Dashboard}
-                    options={{
-                      headerShown: true,
-                      headerBackVisible: true,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="Calendar"
-                    component={Calendar}
-                    options={{
-                      headerShown: true,
-                      headerBackVisible: true,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="Wallet"
-                    component={Wallet}
-                    options={{
-                      headerShown: true,
-                      headerBackVisible: true,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="Profile"
-                    component={Profile}
-                    options={{
-                      headerShown: true,
-                      headerBackVisible: true,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="VerifyPin"
-                    component={VerifyPin}
-                    options={{
-                      headerShown: true,
-                      headerBackVisible: true,
-                      headerTitle: "",
-                    }}
-                  />
-                  <Stack.Screen
-                    name="CategoryDetail"
-                    component={CategoryDetail}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="CategoryDetailForm"
-                    component={CategoryDetailForm}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="ReportDetail"
-                    component={ReportDetail}
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Navigator>
-              </AuthProvider>
-            </NavigationContainer>
-          </CommonModalProvider>
-        </GestureHandlerRootView>
-      </SafeAreaProvider>
-    </QueryClientProvider>
+    <ToastProvider>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <CommonModalProvider>
+              <NavigationContainer>
+                <AuthProvider>
+                  <Stack.Navigator>
+                    <Stack.Screen
+                      name="Login"
+                      component={Login}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Dashboard"
+                      component={Dashboard}
+                      options={{
+                        headerShown: true,
+                        headerBackVisible: true,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="Calendar"
+                      component={Calendar}
+                      options={{
+                        headerShown: true,
+                        headerBackVisible: true,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="Wallet"
+                      component={Wallet}
+                      options={{
+                        headerShown: true,
+                        headerBackVisible: true,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="Profile"
+                      component={Profile}
+                      options={{
+                        headerShown: true,
+                        headerBackVisible: true,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="VerifyPin"
+                      component={VerifyPin}
+                      options={{
+                        headerShown: true,
+                        headerBackVisible: true,
+                        headerTitle: "",
+                      }}
+                    />
+                    <Stack.Screen
+                      name="CategoryDetail"
+                      component={CategoryDetail}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="CategoryDetailForm"
+                      component={CategoryDetailForm}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="ReportDetail"
+                      component={ReportDetail}
+                      options={{ headerShown: false }}
+                    />
+                  </Stack.Navigator>
+                </AuthProvider>
+              </NavigationContainer>
+            </CommonModalProvider>
+          </GestureHandlerRootView>
+        </SafeAreaProvider>
+      </QueryClientProvider>
+    </ToastProvider>
   );
 }

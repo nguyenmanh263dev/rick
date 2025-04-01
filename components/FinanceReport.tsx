@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -20,6 +20,7 @@ import { ReportService } from "services";
 import dayjs from "dayjs";
 import { useCategory } from "hooks";
 import { FORMAT_MONTH_YEAR, formatDate } from "utils/date";
+import { Toast } from "react-native-toast-notifications";
 const screenWidth = Dimensions.get("window").width;
 
 // Weekly activity data (for the line chart)
@@ -121,6 +122,17 @@ const FinanceReport = () => {
   const navigateToDetail = (route: string) => {
     navigation.navigate(route as never);
   };
+
+  useEffect(() => {
+    Toast.show(
+      <View className="p-10">
+        <Text>123</Text>
+      </View>,
+      {
+        type: "success",
+      }
+    );
+  }, []);
 
   return (
     <ScrollView className="flex-1 px-4 pt-4">

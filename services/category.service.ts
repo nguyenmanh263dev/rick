@@ -31,6 +31,6 @@ export const updateCategory = async (
 };
 
 // Delete category
-export const deleteCategory = async (id: string): Promise<void> => {
+export const deleteCategory = async (id: number): Promise<void> => {
   await axios.delete(`/category/${id}`);
 };

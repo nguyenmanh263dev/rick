@@ -95,7 +95,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     (amount: number) => {
       const newMonth = currentMonth.add(amount, "month");
       setCurrentMonth(newMonth);
-      onMonthChange(newMonth.toDate());
+      onMonthChange?.(newMonth.toDate());
     },
     [currentMonth, onMonthChange]
   );

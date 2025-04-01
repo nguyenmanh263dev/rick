@@ -12,9 +12,10 @@ import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCategory } from "../../../../services/category.service";
 import CreateCategoryModal from "./components/CreateCategoryModal";
-import { ICategory } from "../../../../types";
 import { useCategory } from "../../../../hooks";
 import SwipeableToDelete from "../../../../components/swipable-to-delete";
+import { ICategory } from "types";
+import { Toast } from "react-native-toast-notifications";
 
 const CategoryDetail = () => {
   const navigation = useNavigation();
@@ -29,6 +30,9 @@ const CategoryDetail = () => {
     mutationFn: deleteCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
+      Toast.show("Deleted", {
+        type: "success",
+      });
     },
   });
 
