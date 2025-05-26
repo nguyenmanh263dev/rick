@@ -1,10 +1,10 @@
-import { useCategory } from "hooks";
+import { useCategory } from "hooks/index";
 import { styles } from "node_modules/@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/BottomSheetFlashList";
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { IBill } from "types";
-import { formatCompactNumber } from "utils";
-import { formatDate } from "utils/date";
+import { formatCompactNumber } from "../../../../utils/index";
+import { formatDate } from "../../../../utils/date";
 
 const ListBills = ({ bills }: { bills: IBill[] }) => {
   const { getCategoryLabel, getCategoryColor } = useCategory();

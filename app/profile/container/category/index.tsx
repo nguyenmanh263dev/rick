@@ -14,7 +14,7 @@ import { deleteCategory } from "../../../../services/category.service";
 import CreateCategoryModal from "./components/CreateCategoryModal";
 import { useCategory } from "../../../../hooks";
 import SwipeableToDelete from "../../../../components/swipable-to-delete";
-import { ICategory } from "types";
+import { ICategory } from "../../../../types";
 import { Toast } from "react-native-toast-notifications";
 
 const CategoryDetail = () => {

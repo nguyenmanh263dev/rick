@@ -3,8 +3,8 @@ import { View, Text, Pressable, FlatList } from "react-native";
 
 import { Bill } from "./components/bill";
 import { IBill } from "../../types";
-import Modal from "components/modal";
-import { createBills } from "services/bill.service";
+import Modal from "../../components/modal";
+import { createBill, createBills } from "../../services/bill.service";
 import { useMutation } from "@tanstack/react-query";
 
 interface ModalProps {

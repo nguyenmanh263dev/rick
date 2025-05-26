@@ -13,8 +13,11 @@
     "jsx": "react-native",
     "baseUrl": "./",
     "paths": {
-      "@types": ["./types/*"],
-      "@services": ["./services/*"]
+      "types": ["./types/*"],
+      "services": ["./services/*"],
+      "components": ["./components/*"],
+      "hooks": ["./hooks/*"],
+      "utils": ["./utils/*"]
     }
   },
   "include": [

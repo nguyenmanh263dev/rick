@@ -14,12 +14,12 @@ import {
 } from "react-native-chart-kit";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { formatNumber } from "utils";
+import { formatNumber } from "../utils/index";
 import { useQuery } from "@tanstack/react-query";
-import { ReportService } from "services";
+import { ReportService } from "services/index";
 import dayjs from "dayjs";
-import { useCategory } from "hooks";
-import { FORMAT_MONTH_YEAR, formatDate } from "utils/date";
+import { useCategory } from "hooks/index";
+import { FORMAT_MONTH_YEAR, formatDate } from "../utils/date";
 import { Toast } from "react-native-toast-notifications";
 const screenWidth = Dimensions.get("window").width;
 
@@ -122,17 +122,6 @@ const FinanceReport = () => {
   const navigateToDetail = (route: string) => {
     navigation.navigate(route as never);
   };
-
-  useEffect(() => {
-    Toast.show(
-      <View className="p-10">
-        <Text>123</Text>
-      </View>,
-      {
-        type: "success",
-      }
-    );
-  }, []);
 
   return (
     <ScrollView className="flex-1 px-4 pt-4">

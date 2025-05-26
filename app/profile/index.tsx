@@ -7,8 +7,8 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import BottomMenu from "components/layouts/menu";
 import { useNavigation } from "@react-navigation/native";
+import BottomMenu from "../../components/layouts/menu";
 
 export const Profile = () => {
   const navigation = useNavigation();

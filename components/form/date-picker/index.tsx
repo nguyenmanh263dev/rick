@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import { useDatePicker } from "../../../hooks";
-import { formatDate } from "utils/date";
+import { formatDate } from "../../../utils/date";
 interface Props {
   date?: Date | null;
   onValueChange: (value: Date | null) => void;

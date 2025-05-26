@@ -7,9 +7,9 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import BottomMenu from "../../components/layouts/menu";
-import { getBillsByDate } from "services/bill.service";
+import { getBillsByDate } from "../../services/bill.service";
 import { useQuery } from "@tanstack/react-query";
-import { formatNumber } from "utils";
+import { formatNumber } from "../../utils/index";
 import dayjs from "dayjs";
 // Import BottomSheet from the package
 import BottomSheet from "@gorhom/bottom-sheet";
@@ -17,7 +17,7 @@ import { BottomSheetMethods } from "node_modules/@gorhom/bottom-sheet/lib/typesc
 import { IBill } from "types";
 import ListBills from "./components/list-bills";
 import { set, get } from "lodash";
-import { FORMAT_DATE } from "utils/date";
+import { FORMAT_DATE } from "../../utils/date";
 
 const DAYS: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

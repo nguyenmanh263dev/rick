@@ -1,7 +1,6 @@
-import { DatePicker } from "components/form/date-picker";
-import BottomMenu from "components/layouts/menu";
-import TopTabs from "components/top-tabs";
-import { useLoan } from "hooks/useLoan";
+import BottomMenu from "../../components/layouts/menu";
+import TopTabs from "../../components/top-tabs";
+import { useLoan } from "../../hooks/useLoan";
 import React, { useState } from "react";
 import {
   View,

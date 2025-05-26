@@ -10,8 +10,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ICategory } from "types";
 import { updateCategory } from "services/category.service";
+import { ICategory } from "types";
 
 const CategoryDetailForm = () => {
   const navigation = useNavigation();
