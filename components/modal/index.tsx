@@ -1,3 +1,4 @@
+import Button from "components/button";
 import React from "react";
 import { Modal as ReactNativeModal, View, Text, Pressable } from "react-native";
 
@@ -7,6 +8,7 @@ interface ModalProps {
   title?: string;
   children?: React.ReactNode;
   onSubmit?: () => void;
+  isLoading?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -15,6 +17,7 @@ const Modal: React.FC<ModalProps> = ({
   title,
   children,
   onSubmit,
+  isLoading,
 }) => {
   return (
     <ReactNativeModal visible={isVisible} transparent animationType="slide">
@@ -23,22 +26,21 @@ const Modal: React.FC<ModalProps> = ({
           {title && <Text className="text-lg font-bold mb-3">{title}</Text>}
           {children}
           <View className="flex flex-row space-x-2 w-full gap-2">
-            <Pressable
+            <Button
               onPress={onClose}
               className="flex-1 mt-4 bg-blue-500 py-2 rounded-xl"
             >
               <Text className="text-white text-center font-semibold">
                 Close
               </Text>
-            </Pressable>
-            <Pressable
+            </Button>
+            <Button
+              isLoading={isLoading}
               onPress={onSubmit}
               className="flex-1 mt-4 border border-blue-500 py-2 rounded-xl"
             >
-              <Text className="text-blue-500 text-center font-semibold">
-                Save
-              </Text>
-            </Pressable>
+              <Text className="text-white text-center font-semibold">Save</Text>
+            </Button>
           </View>
         </View>
       </View>

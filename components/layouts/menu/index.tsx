@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { uploadBillImage } from "../../../services/bill.service";
 import { RootStackParamList } from "../../../types/navigation.types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import Spinner from "components/spinner";
 
 type BottomMenuProps = {};
 
@@ -40,7 +41,7 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { onOpen } = useAddBillModal();
 
-  const { mutateAsync: uploadBillImageMutation } = useMutation({
+  const { mutateAsync: uploadBillImageMutation, isPending } = useMutation({
     mutationFn: uploadBillImage,
   });
 
@@ -56,6 +57,8 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
       await onOpen(data);
     }
   };
+
+  const loading = true;
 
   return (
     <View className=" border-t border-gray-200 absolute bottom-0 left-0 right-0">
@@ -76,8 +79,13 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
             </TouchableOpacity>
           ))}
         </View>
+
         <CustomAddButton onPress={pickImage}>
-          <Ionicons name="plus" size={24} color="white" />
+          {isPending ? (
+            <Spinner />
+          ) : (
+            <Ionicons name="plus" size={24} color="white" />
+          )}
         </CustomAddButton>
         <View className=" bg-white flex-1 flex-row justify-around items-center h-full">
           {rightMenu.map((item: MenuItemType, index: number) => (

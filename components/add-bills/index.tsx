@@ -19,7 +19,7 @@ const AddBill: React.FC<ModalProps> = ({ isVisible, onClose, title, data }) => {
     data.map((item, index) => ({ ...item, id: index }))
   );
 
-  const { mutateAsync: createBillsMutation } = useMutation({
+  const { mutateAsync: createBillsMutation, isPending } = useMutation({
     mutationKey: ["createBills"],
     mutationFn: createBills,
   });
@@ -40,6 +40,7 @@ const AddBill: React.FC<ModalProps> = ({ isVisible, onClose, title, data }) => {
     <Modal
       isVisible={isVisible}
       onClose={() => onClose()}
+      isLoading={isPending}
       onSubmit={() => {
         handleSubmit();
       }}
