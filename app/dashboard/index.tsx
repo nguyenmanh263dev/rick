@@ -21,8 +21,9 @@ export const Dashboard = () => {
       <SafeAreaView className="flex-1 bg-white">
         <View className="p-4 border-b border-gray-200">
           <Text className="text-xl font-bold text-gray-800">
-            Hello {user?.username}
+            Hello {user?.username} 123123
           </Text>
+          <Text className="text-lg text-gray-600">this is version 1.0.0</Text>
           <Text className="text-sm text-gray-600">Welcome back !</Text>
         </View>
         <FinanceReport />

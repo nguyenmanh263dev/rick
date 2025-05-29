@@ -11,14 +11,14 @@ import {
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "react-native-vector-icons/FontAwesome";
 import { IBill } from "../../../types";
 import { DatePicker } from "../../form/date-picker";
 import { useCategory } from "../../../hooks";
 
 const renderRightActions = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity onPress={onPress} className="justify-center px-4">
-    <Ionicons name="trash-outline" size={24} color="red" />
+    <Ionicons name="trash" size={24} color="red" />
   </TouchableOpacity>
 );
 

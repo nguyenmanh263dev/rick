@@ -1,6 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 import { useDatePicker } from "../../../hooks";
 import { formatDate } from "../../../utils/date";
+import dayjs from "dayjs";
 interface Props {
   date?: Date | null;
   onValueChange: (value: Date | null) => void;
@@ -12,7 +13,7 @@ export const DatePicker = ({ date, onValueChange }: Props) => {
     <Pressable
       onPress={async () => {
         const newDate = await handlePickDate({
-          date,
+          date: dayjs(date).toDate(),
         });
         onValueChange(newDate || null);
       }}

@@ -7,7 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "react-native-vector-icons/FontAwesome";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateCategory } from "services/category.service";
@@ -57,11 +57,11 @@ const CategoryDetailForm = () => {
     <SafeAreaView className="flex-1 bg-gray-100">
       <View className="flex-row justify-between items-center p-4 bg-white border-b border-gray-200">
         <TouchableOpacity onPress={() => navigation.goBack()} className="p-2">
-          <Ionicons name="arrow-back" size={24} color="#000" />
+          <Ionicons name="chevron-left" size={24} color="#000" />
         </TouchableOpacity>
         <Text className="text-xl font-bold text-gray-800">Edit Category</Text>
         <TouchableOpacity onPress={handleSubmit} className="p-2">
-          <Ionicons name="checkmark" size={24} color="#3B82F6" />
+          <Ionicons name="check" size={24} color="#3B82F6" />
         </TouchableOpacity>
       </View>
 
@@ -99,7 +99,7 @@ const CategoryDetailForm = () => {
               onPress={handleAddKeyword}
               className="bg-blue-500 rounded-lg px-4 justify-center"
             >
-              <Ionicons name="add" size={24} color="white" />
+              <Ionicons name="plus" size={24} color="white" />
             </TouchableOpacity>
           </View>
 
@@ -114,7 +114,12 @@ const CategoryDetailForm = () => {
                   onPress={() => handleRemoveKeyword(index)}
                   className="ml-1"
                 >
-                  <Ionicons name="close-circle" size={16} color="#666" />
+                  <Ionicons
+                    name="close"
+                    size={16}
+                    className="font-light"
+                    color="#666"
+                  />
                 </TouchableOpacity>
               </View>
             ))}

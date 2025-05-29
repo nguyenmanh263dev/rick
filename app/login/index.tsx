@@ -61,7 +61,7 @@ export const Login = () => {
               className="button button-primary mt-4"
               onPress={async () => {
                 try {
-                  await login({ username: email, password });
+                  await login({ email, password });
                 } catch (error) {
                   console.error("Login failed:", error);
                 }

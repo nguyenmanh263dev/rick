@@ -1,7 +1,7 @@
 import { RootStackParamList } from "../../../types/navigation.types";
 
 export type MenuItemType = {
-  icon: "home" | "calendar" | "wallet" | "person";
+  icon: string;
   label: string;
   path: keyof RootStackParamList;
   onPress?: () => void;
@@ -19,12 +19,12 @@ export const menuItems: MenuItemType[] = [
     path: "Calendar",
   },
   {
-    icon: "wallet",
+    icon: "globe",
     label: "Debt & Loan",
     path: "Wallet",
   },
   {
-    icon: "person",
+    icon: "user",
     label: "Profile",
     path: "Profile",
   },

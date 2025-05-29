@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import BottomMenu from "../../components/layouts/menu";
 

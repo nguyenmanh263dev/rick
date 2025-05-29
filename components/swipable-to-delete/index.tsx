@@ -1,10 +1,9 @@
 import React, { Children } from "react";
 import { Swipeable, TouchableOpacity } from "react-native-gesture-handler";
-import { Ionicons } from "@expo/vector-icons";
-
+import Ionicons from "react-native-vector-icons/FontAwesome";
 const renderRightActions = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity onPress={onPress} className="justify-center px-4">
-    <Ionicons name="trash-outline" size={24} color="red" />
+    <Ionicons name="trash" size={24} color="red" />
   </TouchableOpacity>
 );
 

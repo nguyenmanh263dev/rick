@@ -31,7 +31,7 @@ axios.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    console.error("Response Error:", error);
+    console.error("Response Error:", error, error.request);
 
     // Handle common error statuses
     if (error.response) {

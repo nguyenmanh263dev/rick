@@ -1,10 +1,18 @@
 import axios from "../libs/axios";
 
 const login = async (email: string, password: string) => {
-  const { data } = await axios.post("/auth/login", {
+  const response = await axios.post("/auth/login", {
     username: email,
     password,
   });
+  const { data } = response;
+  console.log(
+    {
+      username: email,
+      password,
+    },
+    response.data
+  );
 
   return data;
 };

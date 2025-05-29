@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCategory } from "../../../../services/category.service";
@@ -75,13 +75,13 @@ const CategoryDetail = () => {
       <SafeAreaView className="flex-1 bg-gray-100">
         <View className="flex-row justify-between items-center p-4 bg-white border-b border-gray-200">
           <TouchableOpacity onPress={() => navigation.goBack()} className="p-2">
-            <Ionicons name="arrow-back" size={24} color="#000" />
+            <Ionicons name="chevron-left" size={20} color="#000" />
           </TouchableOpacity>
           <Text className="text-xl font-bold text-gray-800">
             Expense Categories
           </Text>
           <TouchableOpacity onPress={handleCreateCategory} className="p-2">
-            <Ionicons name="add-circle-outline" size={24} color="#3B82F6" />
+            <Ionicons name="plus-circle" size={24} color="#3B82F6" />
           </TouchableOpacity>
         </View>
 
