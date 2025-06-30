@@ -9,23 +9,23 @@ export type MenuItemType = {
 
 export const menuItems: MenuItemType[] = [
   {
-    icon: "home",
+    icon: "cellular-outline",
     label: "Dashboard",
     path: "Dashboard",
   },
   {
-    icon: "calendar",
+    icon: "calendar-outline",
     label: "Calendar",
     path: "Calendar",
   },
   {
-    icon: "globe",
+    icon: "trail-sign-outline",
     label: "Debt & Loan",
     path: "Wallet",
   },
   {
-    icon: "user",
-    label: "Profile",
+    icon: "color-filter-outline",
+    label: "Others",
     path: "Profile",
   },
 ];

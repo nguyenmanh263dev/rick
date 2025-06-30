@@ -12,21 +12,39 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { ILoan, LOAN_TYPE } from "types";
+import { ILoan, ACTIVITY } from "types";
 import AddLoan from "./components/add-loan";
+import { formatNumber } from "utils";
+import { formatDate } from "utils/date";
+import { Swipeable } from "react-native-gesture-handler";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
+const renderRightActions = ({ onPress }: { onPress: () => void }) => (
+  <TouchableOpacity onPress={onPress} className="justify-center px-4">
+    <Ionicons name="checkmark-done-outline" size={24} color="green" />
+  </TouchableOpacity>
+);
 const Wallet = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<LOAN_TYPE>(LOAN_TYPE.LOAN);
-  const { debts, loans, createLoan } = useLoan();
+  const [activeTab, setActiveTab] = useState<ACTIVITY>(ACTIVITY.LENDING);
+  const { debts, loans, createLoan, updateLoan } = useLoan();
 
-  const showModal = (type: LOAN_TYPE) => {
+  const showModal = (type: ACTIVITY) => {
     setIsModalVisible(true);
   };
 
   const handleSubmit = async (formData: Partial<ILoan>) => {
     await createLoan(formData);
     setIsModalVisible(false);
+  };
+
+  const changeStatus = async (loan: ILoan) => {
+    try {
+      await updateLoan({ ...loan, status: "DONE" });
+      console.log("good");
+    } catch (error) {
+      console.log("bed");
+    }
   };
 
   return (
@@ -37,35 +55,50 @@ const Wallet = () => {
       <View className="p-4">
         <TopTabs
           options={[
-            { value: LOAN_TYPE.LOAN, label: "Loans" },
-            { value: LOAN_TYPE.DEBT, label: "Debts" },
+            { value: ACTIVITY.LENDING, label: "Lending" },
+            { value: ACTIVITY.BORROWING, label: "Borrowing" },
           ]}
           value={activeTab}
           onChange={(value) => setActiveTab(value)}
         />
 
         <TouchableOpacity
-          className="bg-blue-500 p-3 rounded-lg mb-4"
+          className="bg-sky-500 p-3 rounded-lg mb-4"
           onPress={() => showModal(activeTab)}
         >
           <Text className="text-white text-center">
-            Request {activeTab === LOAN_TYPE.LOAN ? "Loan" : "Rent"}
+            Request {activeTab === ACTIVITY.LENDING ? "Loan" : "Rent"}
           </Text>
         </TouchableOpacity>
 
         <ScrollView>
-          {(activeTab === LOAN_TYPE.LOAN ? loans : debts).map((item) => (
-            <View
-              key={item.id}
-              className="bg-white p-4 rounded-lg mb-3 shadow-sm"
-            >
-              <Text className="text-gray-600">Duration: {item.title}</Text>
+          {(activeTab === ACTIVITY.LENDING ? loans : debts)
+            .filter((item) => item.status === "ACTIVE")
+            .map((item) => (
+              <Swipeable
+                key={item.id}
+                renderRightActions={() =>
+                  renderRightActions({
+                    onPress: () => {
+                      changeStatus(item);
+                    },
+                  })
+                }
+              >
+                <View className="bg-white p-4 rounded-lg mb-3 shadow-sm">
+                  <Text className="text-gray-400 text-lg">{item.title}</Text>
 
-              <Text className="text-lg font-semibold">
-                Amount: ${item.amount}
-              </Text>
-            </View>
-          ))}
+                  <Text className="text-lg font-semibold">
+                    Số tiền: {formatNumber(item.amount)}
+                  </Text>
+                  {item.duaTo && (
+                    <Text className="font-semibold text-neutral-500">
+                      Ngay tra: {formatDate(item.duaTo)}
+                    </Text>
+                  )}
+                </View>
+              </Swipeable>
+            ))}
         </ScrollView>
       </View>
       {isModalVisible && (

@@ -28,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({
           <View className="flex flex-row space-x-2 w-full gap-2">
             <Button
               onPress={onClose}
-              className="flex-1 mt-4 bg-blue-500 py-2 rounded-xl"
+              className="flex-1 mt-4 bg-sky-500 py-2 rounded-xl"
             >
               <Text className="text-white text-center font-semibold">
                 Close
@@ -37,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({
             <Button
               isLoading={isLoading}
               onPress={onSubmit}
-              className="flex-1 mt-4 border border-blue-500 py-2 rounded-xl"
+              className="flex-1 mt-4 border border-sky-500 py-2 rounded-xl"
             >
               <Text className="text-white text-center font-semibold">Save</Text>
             </Button>

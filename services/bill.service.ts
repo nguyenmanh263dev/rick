@@ -24,7 +24,7 @@ export const updateBill = async (
   id: string,
   category: Partial<IBill>
 ): Promise<IBill> => {
-  const { data } = await axios.put(`/bill/${id}`, category);
+  const { data } = await axios.patch(`/bill/${id}`, category);
   return data;
 };
 

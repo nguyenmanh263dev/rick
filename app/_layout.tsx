@@ -1,5 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import { Login } from "./login";
 import "../global.css";
 import { Dashboard } from "./dashboard";
@@ -40,8 +41,7 @@ export default function RootLayout() {
                       name="Dashboard"
                       component={Dashboard}
                       options={{
-                        headerShown: true,
-                        headerBackVisible: true,
+                        headerShown: false,
                       }}
                     />
                     <Stack.Screen
@@ -49,7 +49,8 @@ export default function RootLayout() {
                       component={Calendar}
                       options={{
                         headerShown: true,
-                        headerBackVisible: true,
+                        headerBackButtonDisplayMode: "minimal",
+                        headerBackVisible: false,
                       }}
                     />
                     <Stack.Screen
@@ -57,7 +58,8 @@ export default function RootLayout() {
                       component={Wallet}
                       options={{
                         headerShown: true,
-                        headerBackVisible: true,
+                        headerBackVisible: false,
+                        title: "Dept and Loan",
                       }}
                     />
                     <Stack.Screen
@@ -65,7 +67,6 @@ export default function RootLayout() {
                       component={Profile}
                       options={{
                         headerShown: true,
-                        headerBackVisible: true,
                       }}
                     />
                     <Stack.Screen
@@ -73,7 +74,7 @@ export default function RootLayout() {
                       component={VerifyPin}
                       options={{
                         headerShown: true,
-                        headerBackVisible: true,
+
                         headerTitle: "",
                       }}
                     />

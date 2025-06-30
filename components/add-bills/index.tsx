@@ -28,7 +28,6 @@ const AddBill: React.FC<ModalProps> = ({ isVisible, onClose, title, data }) => {
     await createBillsMutation(listData)
       .then((res) => {
         onClose(listData);
-
         return res;
       })
       .catch((err) => {
@@ -41,12 +40,14 @@ const AddBill: React.FC<ModalProps> = ({ isVisible, onClose, title, data }) => {
       isVisible={isVisible}
       onClose={() => onClose()}
       isLoading={isPending}
+      title="News bills"
       onSubmit={() => {
         handleSubmit();
       }}
     >
       <FlatList
         data={listData}
+        ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
         renderItem={({ item, index }) => (
           <Bill
             key={item.id}

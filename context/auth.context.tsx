@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }: { children: React.JSX.Element }) => {
     try {
       const response = await loginMutation({ email, password });
       if (response?.token) {
-        const tokenString = String(response.token.token);
+        const tokenString = String(response.token);
         console.log("Token received:", response?.token, tokenString);
         await secureStore.saveTokenSecure(tokenString);
 

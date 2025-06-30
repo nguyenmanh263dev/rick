@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
-import Ionicons from "react-native-vector-icons/FontAwesome";
+import { View, Text, TouchableOpacity } from "react-native";
 import { menuItems, MenuItemType } from "./config";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -10,6 +9,7 @@ import { uploadBillImage } from "../../../services/bill.service";
 import { RootStackParamList } from "../../../types/navigation.types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Spinner from "components/spinner";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 type BottomMenuProps = {};
 
@@ -23,8 +23,7 @@ const CustomAddButton = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className=" absolute left-1/2 bottom-1/2 -translate-x-1/2 z-10 bg-blue-400 w-16 h-16 rounded-full flex items-center justify-center border-4 border-white"
-      style={{ top: -30 }}
+      className=" absolute left-1/2 bottom-8 -translate-x-1/2 z-10 bg-sky-500 w-16 h-14 rounded-xl flex items-center justify-center border-4 border-white"
     >
       {children}
     </TouchableOpacity>
@@ -62,8 +61,8 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
 
   return (
     <View className=" border-t border-gray-200 absolute bottom-0 left-0 right-0">
-      <View className="flex-row justify-around items-center h-[84px] ">
-        <View className="relative bg-white flex-1 flex-row justify-around items-center h-full">
+      <View className="  bg-white flex-row justify-around items-center h-[84px] gap-16">
+        <View className="relative flex-1 flex-row justify-around items-center h-full">
           {leftMenu.map((item: MenuItemType, index: number) => (
             <TouchableOpacity
               key={index}
@@ -75,7 +74,7 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
                 size={24}
                 color={route.name === item.label ? "#4B5563" : "#4B5563"}
               />
-              <Text className="text-xs mt-1 text-gray-600">{item.label}</Text>
+              <Text className="text-xs mt-1 text-gray-500">{item.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -84,7 +83,7 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
           {isPending ? (
             <Spinner />
           ) : (
-            <Ionicons name="plus" size={24} color="white" />
+            <Ionicons name="cloud-upload-outline" size={24} color="white" />
           )}
         </CustomAddButton>
         <View className=" bg-white flex-1 flex-row justify-around items-center h-full">
@@ -99,7 +98,7 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
                 size={24}
                 color={route.name === item.label ? "#4B5563" : "#4B5563"}
               />
-              <Text className="text-xs mt-1 text-gray-600">{item.label}</Text>
+              <Text className="text-xs mt-1 text-gray-500">{item.label}</Text>
             </TouchableOpacity>
           ))}
         </View>

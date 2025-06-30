@@ -1,4 +1,4 @@
-export enum LOAN_TYPE {
-  LOAN = "LOAN",
-  DEBT = "DEBT",
+export enum ACTIVITY {
+  LENDING = "LOAN",
+  BORROWING = "DEBT",
 }

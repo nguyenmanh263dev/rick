@@ -27,6 +27,7 @@ module.exports = function (api) {
             components: "./components",
             hooks: "./hooks",
             types: "./types",
+            context: "./context",
           },
         },
       ],

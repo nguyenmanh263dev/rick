@@ -87,6 +87,3 @@ const style = StyleSheet.create({
     padding: 16,
   },
 });
-function saveTokenSecure(arg0: string, token: any) {
-  throw new Error("Function not implemented.");
-}

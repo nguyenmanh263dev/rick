@@ -18,7 +18,7 @@ export default function Table<T>({
   return (
     <View className="p-4 bg-gray-100 flex-1">
       {/* Header */}
-      <View className="flex-row bg-blue-500 p-3 rounded-t-lg">
+      <View className="flex-row bg-sky-500 p-3 rounded-t-lg">
         {headers.map((header) => (
           <Text className="flex-1 text-white font-bold text-center">
             {header.label}

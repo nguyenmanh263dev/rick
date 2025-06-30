@@ -50,8 +50,8 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
       className={`
         flex-row items-center justify-center
         py-3 px-6 rounded-lg
-        bg-blue-500 
-        ${isActuallyDisabled ? "opacity-60 bg-blue-300" : "active:bg-blue-600"}
+        bg-sky-500 
+        ${isActuallyDisabled ? "opacity-60 bg-sky-300" : "active:bg-sky-600"}
         ${className || ""} 
       `}
       accessibilityRole="button"

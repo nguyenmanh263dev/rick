@@ -17,7 +17,8 @@
       "services": ["./services/*"],
       "components": ["./components/*"],
       "hooks": ["./hooks/*"],
-      "utils": ["./utils/*"]
+      "utils": ["./utils/*"],
+      "context": ["./context/*"]
     }
   },
   "include": [

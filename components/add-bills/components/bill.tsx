@@ -15,6 +15,7 @@ import Ionicons from "react-native-vector-icons/FontAwesome";
 import { IBill } from "../../../types";
 import { DatePicker } from "../../form/date-picker";
 import { useCategory } from "../../../hooks";
+import { formatCurrencyToNumber, formatCurrency } from "utils/number";
 
 const renderRightActions = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity onPress={onPress} className="justify-center px-4">
@@ -67,18 +68,32 @@ export const Bill = ({ onDelete, index, item, onChange }: Props) => {
         })
       }
     >
-      <View className=" border-b py-4">
+      <View className="border-b border-gray-300 py-2 border px-4 rounded-xl mb-2 bg-sky-10">
         <View className="flex justify-between items-center flex-row">
-          <Text>{index + 1}</Text>
-          <Text>{item.amount}</Text>
-
-          <RNPickerSelect
-            value={item.categoryId}
-            onValueChange={(categoryId) => {
-              onChange({ ...item, categoryId });
+          <Text className="text-lg font-bold mb-0 p-0 text-sky-500">
+            {index + 1}
+          </Text>
+          <TextInput
+            className="border-0 max-w-1/4 pt-0"
+            value={formatCurrency(item.amount || 0)}
+            keyboardType="numeric"
+            multiline={true}
+            placeholder="Enter amount"
+            numberOfLines={4}
+            onChangeText={(text) => {
+              onChange({ ...item, amount: formatCurrencyToNumber(text) });
             }}
-            items={defaultCategories}
           />
+          <View className="max-w-40 overflow-hidden">
+            <RNPickerSelect
+              value={item.categoryId}
+              onValueChange={(categoryId) => {
+                onChange({ ...item, categoryId });
+              }}
+              items={defaultCategories}
+            />
+          </View>
+
           <DatePicker
             onValueChange={(date) => {
               if (!date) return;
@@ -88,7 +103,7 @@ export const Bill = ({ onDelete, index, item, onChange }: Props) => {
           />
         </View>
         <TextInput
-          className="mt-4 border-0 max-w-1/4"
+          className="mt-2 border-0 max-w-1/4"
           value={item.description}
           multiline={true}
           numberOfLines={4}

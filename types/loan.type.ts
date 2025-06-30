@@ -1,9 +1,10 @@
-import { LOAN_TYPE } from "./enum";
+import { ACTIVITY } from "./enum";
 
 export interface ILoan {
   id: string;
-  type: LOAN_TYPE;
+  type: ACTIVITY;
   amount: number;
   title: string;
   duaTo: Date;
+  status: string;
 }

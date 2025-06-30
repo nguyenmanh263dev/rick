@@ -20,8 +20,8 @@ export const createLoan = async (loan: Partial<ILoan>): Promise<ILoan> => {
 };
 
 // Update loan
-export const updateLoan = async (id: string): Promise<ILoan> => {
-  const { data } = await axios.put(`/loan/${id}`, {});
+export const updateLoan = async (loan: Partial<ILoan>): Promise<ILoan> => {
+  const { data } = await axios.patch(`/loan/${loan.id}`, loan);
   return data;
 };
 

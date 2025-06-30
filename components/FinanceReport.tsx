@@ -21,6 +21,11 @@ import dayjs from "dayjs";
 import { useCategory } from "hooks/index";
 import { FORMAT_MONTH_YEAR, formatDate } from "../utils/date";
 import { Toast } from "react-native-toast-notifications";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import BottomSheet, {
+  BottomSheetTextInput,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 const screenWidth = Dimensions.get("window").width;
 
 // Weekly activity data (for the line chart)
@@ -124,18 +129,18 @@ const FinanceReport = () => {
   };
 
   return (
-    <ScrollView className="flex-1 px-4 pt-4">
-      {/* Third Row - Metric Cards */}
+    <View className="flex-1 px-4 pt-4 -mt-16">
       <View className="flex-row flex-wrap justify-between mb-5">
         {metricCards.map((card, index) => (
           <View
             key={index}
-            style={{ backgroundColor: card.bgColor }}
-            className="w-[48%] p-4 rounded-xl mb-4"
+            className="w-[48%] p-4 rounded-xl mb-4 bg-neutral-900/35"
           >
             <View className="flex-row justify-between items-center mb-4">
               <View>
-                <Text className="text-white font-medium">{card.title}</Text>
+                <Text className="text-white text-lg font-semibold">
+                  {card.title}
+                </Text>
               </View>
             </View>
             <View className="flex-row items-baseline">
@@ -156,7 +161,7 @@ const FinanceReport = () => {
             </View>
           </View>
         ))}
-        <View className="w-[48%] p-4 rounded-xl mb-4 bg-blue-400">
+        <View className="w-[48%] p-4 rounded-xl mb-4 bg-neutral-900/35">
           <View className="flex-row justify-between items-center mb-4">
             {/* <View className="h-12 w-12 bg-white rounded-full items-center justify-center">
                 <Ionicons
@@ -166,7 +171,9 @@ const FinanceReport = () => {
                 />
               </View> */}
             <View>
-              <Text className="text-white font-medium">{"Mục tiêu"}</Text>
+              <Text className="text-white text-lg font-semibold">
+                {"Mục tiêu"}
+              </Text>
             </View>
           </View>
           <View className="flex-row items-baseline">
@@ -177,8 +184,8 @@ const FinanceReport = () => {
           </View>
         </View>
       </View>
-      <View className="mb-5 bg-white rounded-lg shadow-sm">
-        <Text className="px-4 py-2 font-bold">Chi tiết theo danh mục</Text>
+      <View className="mb-5 bg-white rounded-xl shadow-sm">
+        <Text className="p-6 font-bold text-lg">Chi tiết theo danh mục</Text>
         <View className="flex items-center">
           {reportByCategory && (
             <PieChart
@@ -221,7 +228,7 @@ const FinanceReport = () => {
           }}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

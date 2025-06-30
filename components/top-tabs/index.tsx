@@ -13,12 +13,12 @@ function TopTabs<T extends { value: string; label: string }>({
   onChange,
 }: TopTabsProps<T>) {
   return (
-    <View className="flex-row bg-gray-100 rounded-full p-1 mb-4">
+    <View className="flex-row bg-gray-100 rounded-xl p-1 mb-4">
       {options.map((option) => (
         <TouchableOpacity
           key={option.value}
           onPress={() => onChange(option.value)}
-          className={`flex-1 py-2 px-4 rounded-full ${
+          className={`flex-1 py-2 px-4 rounded-xl ${
             value === option.value ? "bg-white" : ""
           }`}
         >

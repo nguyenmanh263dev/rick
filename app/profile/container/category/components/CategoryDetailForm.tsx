@@ -97,7 +97,7 @@ const CategoryDetailForm = () => {
             />
             <TouchableOpacity
               onPress={handleAddKeyword}
-              className="bg-blue-500 rounded-lg px-4 justify-center"
+              className="bg-sky-500 rounded-lg px-4 justify-center"
             >
               <Ionicons name="plus" size={24} color="white" />
             </TouchableOpacity>

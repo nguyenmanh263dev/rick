@@ -14,21 +14,23 @@ import { useAuth } from "../../context/auth.context";
 export const Dashboard = () => {
   const { user } = useAuth();
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 bg-gray-100 relative h-screen"
-    >
-      <SafeAreaView className="flex-1 bg-white">
-        <View className="p-4 border-b border-gray-200">
-          <Text className="text-xl font-bold text-gray-800">
-            Hello {user?.username} 123123
-          </Text>
-          <Text className="text-lg text-gray-600">this is version 1.0.0</Text>
-          <Text className="text-sm text-gray-600">Welcome back !</Text>
-        </View>
-        <FinanceReport />
-      </SafeAreaView>
+    <View className="flex-1 ">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1 relative h-screen"
+      >
+        <ScrollView>
+          <View className="px-4 pt-24 pb-28 border-b border-gray-200 bg-sky-500 rounded-b-2xl">
+            <Text className="text-4xl font-bold text-white mb-4 font-mono">
+              Hello {user?.username}
+            </Text>
+            <Text className="text-md text-white">this is version 1.0.0</Text>
+            <Text className="text-lg text-white">Welcome back !</Text>
+          </View>
+          <FinanceReport />
+        </ScrollView>
+      </KeyboardAvoidingView>
       <BottomMenu />
-    </KeyboardAvoidingView>
+    </View>
   );
 };

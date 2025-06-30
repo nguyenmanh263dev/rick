@@ -6,8 +6,8 @@ import axios, {
 import secureStore from "./secure-store";
 
 // Configure axios defaults
-axios.defaults.baseURL = process.env.API_BASE_URL;
-// axios.defaults.baseURL = "http://localhost:2603";
+// axios.defaults.baseURL = process.env.API_BASE_URL;
+axios.defaults.baseURL = "http://localhost:2603";
 
 axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";

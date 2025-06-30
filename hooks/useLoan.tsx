@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { LoanService } from "../services";
-import { ILoan, LOAN_TYPE } from "../types";
+import { ILoan, ACTIVITY } from "../types";
 import { useMemo } from "react";
 
 export const useLoan = () => {
@@ -20,9 +20,13 @@ export const useLoan = () => {
       }),
   });
 
-  const { mutate: updateLoanMutate } = useMutation({
+  const { mutateAsync: updateLoanMutate } = useMutation({
     mutationKey: ["update-loan"],
-    mutationFn: (loan: ILoan) => LoanService.updateLoan(loan.id),
+    mutationFn: (loan: ILoan) =>
+      LoanService.updateLoan(loan).then((res) => {
+        refetch();
+        return res;
+      }),
   });
 
   const { mutate: deleteLoanMutate } = useMutation({
@@ -35,11 +39,11 @@ export const useLoan = () => {
   });
 
   const loans = useMemo(() => {
-    return data?.filter((loan) => loan.type === LOAN_TYPE.LOAN) || [];
+    return data?.filter((loan) => loan.type === ACTIVITY.LENDING) || [];
   }, [data]);
 
   const debts = useMemo(() => {
-    return data?.filter((loan) => loan.type === LOAN_TYPE.DEBT) || [];
+    return data?.filter((loan) => loan.type === ACTIVITY.BORROWING) || [];
   }, [data]);
   return {
     data: data || [],

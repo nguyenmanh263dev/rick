@@ -8,15 +8,15 @@ export const formatNumber = (num?: number): string => {
   }
 
   const formatter = new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 2,
+    maximumFractionDigits: Math.abs(num) >= 1000000 ? 1 : 0,
   });
 
   if (Math.abs(num) >= 1000 && Math.abs(num) < 1000000) {
-    return formatter.format(num / 1000) + "K";
+    return formatter.format(num / 1000) + " K";
   } else if (Math.abs(num) >= 1000000 && Math.abs(num) < 1000000000) {
-    return formatter.format(num / 1000000) + "M";
+    return formatter.format(num / 1000000) + " M";
   } else if (Math.abs(num) >= 1000000000) {
-    return formatter.format(num / 1000000000) + "B";
+    return formatter.format(num / 1000000000) + " B";
   }
 
   return formatter.format(num);

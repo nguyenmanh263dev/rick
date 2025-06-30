@@ -1,7 +1,7 @@
 import { DatePicker } from "components/form/date-picker";
 import { useState } from "react";
 import { Modal, View, TextInput, TouchableOpacity, Text } from "react-native";
-import { ILoan, LOAN_TYPE } from "types";
+import { ILoan, ACTIVITY } from "types";
 
 interface Props {
   onClose: () => void;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const defaultLoan = {
-  type: LOAN_TYPE.LOAN,
+  type: ACTIVITY.LENDING,
   amount: 0,
   title: "",
   duaTo: new Date(),
@@ -27,7 +27,7 @@ const AddLoan = ({ type, onClose, onSubmit }: Props) => {
       <View className="flex-1 justify-center items-center bg-black/50">
         <View className="bg-white p-6 rounded-lg w-5/6">
           <Text className="text-xl font-bold mb-4">
-            Request {formData.type === LOAN_TYPE.LOAN ? "Loan" : "Rent"}
+            Request {formData.type === ACTIVITY.LENDING ? "Loan" : "Rent"}
           </Text>
 
           <TextInput
@@ -63,7 +63,7 @@ const AddLoan = ({ type, onClose, onSubmit }: Props) => {
               <Text className="text-center">Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              className="bg-blue-500 p-3 rounded-lg flex-1"
+              className="bg-sky-500 p-3 rounded-lg flex-1"
               onPress={() => onSubmit(formData)}
             >
               <Text className="text-white text-center">Submit</Text>
