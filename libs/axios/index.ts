@@ -2,15 +2,16 @@ import axios, {
   AxiosError,
   AxiosResponse,
   InternalAxiosRequestConfig,
-} from "axios";
-import secureStore from "./secure-store";
+} from 'axios';
+import secureStore from './secure-store';
 
 // Configure axios defaults
-// axios.defaults.baseURL = process.env.API_BASE_URL;
-axios.defaults.baseURL = "http://localhost:2603";
+axios.defaults.baseURL = process.env.API_BASE_URL;
+// axios.defaults.baseURL = "http://localhost:2603";
+// axios.defaults.baseURL = "https://domapp.space";
 
-axios.defaults.headers.post["Content-Type"] =
-  "application/x-www-form-urlencoded";
+axios.defaults.headers.post['Content-Type'] =
+  'application/x-www-form-urlencoded';
 
 axios.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
@@ -31,21 +32,22 @@ axios.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    console.error("Response Error:", error, error.request);
+    console.error('Response Error:', error, error.request);
 
     // Handle common error statuses
     if (error.response) {
       if (error.response.status === 401) {
-        console.error("Unauthorized! Redirecting to login...");
+        console.error('Unauthorized! Redirecting to login...');
+        secureStore.removeTokenSecure();
       } else if (error.response.status === 403) {
-        console.error("Forbidden! You do not have access.");
+        console.error('Forbidden! You do not have access.');
       } else if (error.response.status === 500) {
-        console.error("Server Error! Please try again later.");
+        console.error('Server Error! Please try again later.');
       }
     } else if (error.request) {
-      console.error("No response received from the server:", error.request);
+      console.error('No response received from the server:', error.request);
     } else {
-      console.error("Error in setting up the request:", error.message);
+      console.error('Error in setting up the request:', error.message);
     }
 
     return Promise.reject(error);

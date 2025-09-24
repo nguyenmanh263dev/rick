@@ -1,7 +1,7 @@
-import BottomMenu from "../../components/layouts/menu";
-import TopTabs from "../../components/top-tabs";
-import { useLoan } from "../../hooks/useLoan";
-import React, { useState } from "react";
+import BottomMenu from '../../components/layouts/menu';
+import TopTabs from '../../components/top-tabs';
+import { useLoan } from '../../hooks/useLoan';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,13 +11,13 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
-} from "react-native";
-import { ILoan, ACTIVITY } from "types";
-import AddLoan from "./components/add-loan";
-import { formatNumber } from "utils";
-import { formatDate } from "utils/date";
-import { Swipeable } from "react-native-gesture-handler";
-import Ionicons from "react-native-vector-icons/Ionicons";
+} from 'react-native';
+import { ILoan, ACTIVITY } from '@types';
+import AddLoan from './components/add-loan';
+import { formatNumber } from 'utils';
+import { formatDate } from 'utils/date';
+import { Swipeable } from 'react-native-gesture-handler';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const renderRightActions = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity onPress={onPress} className="justify-center px-4">
@@ -40,26 +40,23 @@ const Wallet = () => {
 
   const changeStatus = async (loan: ILoan) => {
     try {
-      await updateLoan({ ...loan, status: "DONE" });
-      console.log("good");
-    } catch (error) {
-      console.log("bed");
-    }
+      await updateLoan({ ...loan, status: 'DONE' });
+    } catch (error) {}
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex-1 bg-white relative h-screen"
     >
       <View className="p-4">
         <TopTabs
           options={[
-            { value: ACTIVITY.LENDING, label: "Lending" },
-            { value: ACTIVITY.BORROWING, label: "Borrowing" },
+            { value: ACTIVITY.LENDING, label: 'Lending' },
+            { value: ACTIVITY.BORROWING, label: 'Borrowing' },
           ]}
           value={activeTab}
-          onChange={(value) => setActiveTab(value)}
+          onChange={value => setActiveTab(value)}
         />
 
         <TouchableOpacity
@@ -67,14 +64,14 @@ const Wallet = () => {
           onPress={() => showModal(activeTab)}
         >
           <Text className="text-white text-center">
-            Request {activeTab === ACTIVITY.LENDING ? "Loan" : "Rent"}
+            Request {activeTab === ACTIVITY.LENDING ? 'Loan' : 'Rent'}
           </Text>
         </TouchableOpacity>
 
         <ScrollView>
           {(activeTab === ACTIVITY.LENDING ? loans : debts)
-            .filter((item) => item.status === "ACTIVE")
-            .map((item) => (
+            .filter(item => item.status === 'ACTIVE')
+            .map(item => (
               <Swipeable
                 key={item.id}
                 renderRightActions={() =>

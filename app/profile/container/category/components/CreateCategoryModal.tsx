@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, TextInput } from "react-native";
-import withModalWrapper from "../../../../../components/HOC/ModalFormWrapper";
-import Modal from "../../../../../components/modal";
+import React, { useState } from 'react';
+import { View, Text, TextInput } from 'react-native';
+import Modal from '@components/modal';
 
-const CreateCategoryModal: React.FC = ({
-  isVisible,
-  onClose,
-  onSubmit,
-}: any) => {
-  const [categoryName, setCategoryName] = useState("");
+interface Props {
+  isVisible: boolean;
+  onClose: () => void;
+  onSubmit: (categoryName: string) => void;
+}
+
+const CreateCategoryModal = ({ isVisible, onClose, onSubmit }: Props) => {
+  const [categoryName, setCategoryName] = useState('');
 
   const handleSubmit = () => {
     onSubmit(categoryName);

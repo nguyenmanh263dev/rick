@@ -22,12 +22,12 @@ module.exports = function (api) {
         {
           root: ["./"],
           alias: {
-            utils: "./utils",
-            services: "./services",
-            components: "./components",
-            hooks: "./hooks",
-            types: "./types",
-            context: "./context",
+            "@utils": "./utils",
+            "@services": "./services",
+            "@components": "./components",
+            "@hooks": "./hooks",
+            "@types": "./types",
+            "@context": "./context",
           },
         },
       ],

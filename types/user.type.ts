@@ -5,3 +5,5 @@ export interface IUser {
   fullName: string;
   //   devices: Device[];
 }
+
+export type IUserConfig = Record<string, string>;

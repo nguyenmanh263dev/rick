@@ -6,20 +6,16 @@ const login = async (email: string, password: string) => {
     password,
   });
   const { data } = response;
-  console.log(
-    {
-      username: email,
-      password,
-    },
-    response.data
-  );
 
   return data;
 };
 
 const getMyInfo = async () => {
-  const { data } = await axios.get("/user/me");
-
-  return data;
+  try {
+    const { data } = await axios.get("/user/me");
+    return data;
+  } catch (error) {
+    return null;
+  }
 };
 export { login, getMyInfo };

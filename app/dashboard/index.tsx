@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import BottomMenu from "../../components/layouts/menu";
-import FinanceReport from "../../components/FinanceReport";
+import FinanceReport from "./components/FinanceReport";
 import { useAuth } from "../../context/auth.context";
 
 export const Dashboard = () => {

@@ -37,6 +37,9 @@ export const AuthProvider = ({ children }: { children: React.JSX.Element }) => {
     queryFn: () =>
       AuthService.getMyInfo()
         .then((res) => {
+          if (!res) {
+            throw new Error("User not found");
+          }
           navigate("Dashboard" as never);
           return res;
         })
@@ -57,7 +60,6 @@ export const AuthProvider = ({ children }: { children: React.JSX.Element }) => {
       const response = await loginMutation({ email, password });
       if (response?.token) {
         const tokenString = String(response.token);
-        console.log("Token received:", response?.token, tokenString);
         await secureStore.saveTokenSecure(tokenString);
 
         reloadUserInfo();

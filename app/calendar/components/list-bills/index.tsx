@@ -1,17 +1,10 @@
-import { useCategory } from "hooks/index";
-import React, { useCallback, useMemo, useRef } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { IBill } from "types";
-import { formatCompactNumber, formatNumber } from "../../../../utils/index";
-import { formatDate } from "../../../../utils/date";
-import SwipeableToDelete from "components/swipable-to-delete";
-import { useNavigation } from "@react-navigation/native";
-import BottomSheet, {
-  BottomSheetTextInput,
-  BottomSheetView,
-  useBottomSheet,
-} from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useCategory } from '@hooks';
+import React from 'react';
+import { View, Text, FlatList } from 'react-native';
+import { IBill } from '@types';
+import { formatNumber } from '../../../../utils/index';
+import { formatDate } from '../../../../utils/date';
+import SwipeableToDelete from 'components/swipable-to-delete';
 
 const ListBills = ({
   bills,
@@ -34,16 +27,9 @@ const ListBills = ({
       >
         <View className="flex-1">
           <Text className="text-lg font-semibold text-gray-800 mb-1">
-            {getCategoryLabel(item.categoryId)}
+            {getCategoryLabel(item.categoryId)}: {formatNumber(item.amount)}
           </Text>
-          <Text className="text-sm text-gray-600">
-            Ngày {formatDate(item.date)}
-          </Text>
-        </View>
-        <View className="items-end">
-          <Text className="text-lg font-bold text-gray-800 mb-1">
-            {formatNumber(item.amount)}
-          </Text>
+          <Text className="text-sm text-gray-600">{item.description}</Text>
         </View>
       </View>
     </SwipeableToDelete>
@@ -54,11 +40,18 @@ const ListBills = ({
   }
   return (
     <View className="flex-1 bg-white rounded-2xl shadow-slate-400 p-4 m-2">
-      <Text className="text-xl font-bold mb-4 text-gray-800">Bills</Text>
+      <View className="flex-row justify-between items-center">
+        <Text className="text-xl font-bold mb-4 text-gray-800">Bills</Text>
+        {bills[0]?.date && (
+          <Text className="text-lg font-bold text-gray-600">
+            Ngày {formatDate(bills[0]?.date)}
+          </Text>
+        )}
+      </View>
       <FlatList
         data={bills}
         renderItem={renderBillItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         showsVerticalScrollIndicator={true}
         contentContainerClassName="pb-5"
         ListEmptyComponent={

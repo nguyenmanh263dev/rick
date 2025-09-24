@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-} from "react-native";
-import Ionicons from "react-native-vector-icons/FontAwesome";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateCategory } from "services/category.service";
-import { ICategory } from "types";
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/FontAwesome';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateCategory } from 'services/category.service';
+import { ICategory } from '@types';
 
 const CategoryDetailForm = () => {
   const navigation = useNavigation();
@@ -22,13 +22,13 @@ const CategoryDetailForm = () => {
   const [name, setName] = useState(category.name);
   const [color, setColor] = useState(category.color);
   const [keywords, setKeywords] = useState<string[]>(category.keywords || []);
-  const [newKeyword, setNewKeyword] = useState("");
+  const [newKeyword, setNewKeyword] = useState('');
 
   const updateMutation = useMutation({
     mutationFn: (updatedCategory: ICategory) =>
       updateCategory(category.id, updatedCategory),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
       navigation.goBack();
     },
   });
@@ -36,7 +36,7 @@ const CategoryDetailForm = () => {
   const handleAddKeyword = () => {
     if (newKeyword.trim()) {
       setKeywords([...keywords, newKeyword.trim()]);
-      setNewKeyword("");
+      setNewKeyword('');
     }
   };
 

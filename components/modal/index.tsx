@@ -2,15 +2,6 @@ import Button from "components/button";
 import React from "react";
 import { Modal as ReactNativeModal, View, Text, Pressable } from "react-native";
 
-interface ModalProps {
-  isVisible: boolean;
-  onClose: () => void;
-  title?: string;
-  children?: React.ReactNode;
-  onSubmit?: () => void;
-  isLoading?: boolean;
-}
-
 const Modal: React.FC<ModalProps> = ({
   isVisible,
   onClose,

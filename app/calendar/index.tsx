@@ -1,29 +1,29 @@
-import React, { useState, useCallback, useMemo, useRef } from "react";
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
-} from "react-native";
-import BottomMenu from "../../components/layouts/menu";
-import { getBillsByDate } from "../../services/bill.service";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { formatNumber } from "../../utils/index";
-import dayjs from "dayjs";
+} from 'react-native';
+import BottomMenu from '../../components/layouts/menu';
+import { getBillsByDate } from '../../services/bill.service';
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
+import { formatNumber } from '../../utils/index';
+import dayjs from 'dayjs';
 // Import BottomSheet from the package
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { BottomSheetMethods } from "node_modules/@gorhom/bottom-sheet/lib/typescript/types";
-import { IBill } from "types";
-import ListBills from "./components/list-bills";
-import { set, get } from "lodash";
-import { FORMAT_DATE } from "../../utils/date";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Bill } from "components/add-bills/components/bill";
-import { BillService } from "services/index";
-import Button from "components/button";
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetMethods } from 'node_modules/@gorhom/bottom-sheet/lib/typescript/types';
+import { IBill } from '@types';
+import ListBills from './components/list-bills';
+import { set, get } from 'lodash';
+import { FORMAT_DATE } from '../../utils/date';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Bill } from 'components/add-bills/components/bill';
+import { BillService } from 'services/index';
+import Button from 'components/button';
 
-const DAYS: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const DAYS: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // Interface for marked dates
 interface MarkedDate {
@@ -64,7 +64,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
 
   // Define snap points for the bottom sheet
-  const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
+  const snapPoints = useMemo(() => ['25%', '50%', '75%'], []);
 
   const handleDateSelect = useCallback(
     (date: Date) => {
@@ -74,8 +74,8 @@ export const Calendar: React.FC<CalendarProps> = ({
   );
   const queryClient = new QueryClient();
   const { data } = useQuery({
-    queryKey: ["bills", currentMonth.toDate()],
-    queryFn: (params) => getBillsByDate(currentMonth.toDate(), params),
+    queryKey: ['bills', currentMonth.toDate()],
+    queryFn: params => getBillsByDate(currentMonth.toDate(), params),
   });
 
   const { mutate: editBill, isPending } = useMutation({
@@ -83,7 +83,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     onSuccess: () => {
       sheetRef.current?.close();
       queryClient.invalidateQueries({
-        queryKey: ["bills", currentMonth.toDate()],
+        queryKey: ['bills', currentMonth.toDate()],
       });
     },
   });
@@ -113,7 +113,7 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   const changeMonth = useCallback(
     (amount: number) => {
-      const newMonth = currentMonth.add(amount, "month");
+      const newMonth = currentMonth.add(amount, 'month');
       setCurrentMonth(newMonth);
       onMonthChange?.(newMonth.toDate());
     },
@@ -123,7 +123,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   const generateMatrix = useCallback((): Array<Array<string | number>> => {
     const matrix: Array<Array<string | number>> = [];
 
-    const firstDay = currentMonth.startOf("month").day();
+    const firstDay = currentMonth.startOf('month').day();
     const daysInMonth = currentMonth.daysInMonth();
 
     let counter = 1;
@@ -131,9 +131,9 @@ export const Calendar: React.FC<CalendarProps> = ({
       matrix[row] = [];
       for (let col = 0; col < 7; col++) {
         if (row === 1 && col < firstDay) {
-          set(matrix, [row, col], "");
+          set(matrix, [row, col], '');
         } else if (counter > daysInMonth) {
-          set(matrix, [row, col], "");
+          set(matrix, [row, col], '');
         } else {
           set(matrix, [row, col], counter++);
         }
@@ -147,7 +147,7 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   const isDateDisabled = useCallback(
     (date: string | number): boolean => {
-      if (!date || typeof date === "string") return true;
+      if (!date || typeof date === 'string') return true;
 
       const fullDate = currentMonth.date(date as number);
 
@@ -161,21 +161,21 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   const isDateSelected = useCallback(
     (date: string | number): boolean => {
-      if (!date || typeof date === "string") return false;
+      if (!date || typeof date === 'string') return false;
 
       const fullDate = currentMonth.date(date as number);
       const selected = dayjs(selectedDate);
 
-      return fullDate.isSame(selected, "day");
+      return fullDate.isSame(selected, 'day');
     },
     [currentMonth, selectedDate]
   );
 
   const isDateMarked = useCallback(
     (date: string | number): boolean => {
-      if (!date || typeof date === "string") return false;
+      if (!date || typeof date === 'string') return false;
 
-      const dateString = currentMonth.date(date as number).format("YYYY-MM-DD");
+      const dateString = currentMonth.date(date as number).format('YYYY-MM-DD');
       return !!markedDates[dateString];
     },
     [currentMonth, markedDates]
@@ -183,7 +183,7 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex-1 bg-gray-100 relative h-screen"
     >
       <View className="p-4 m-2 bg-white rounded-xl shadow-slate-400">
@@ -193,7 +193,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           </TouchableOpacity>
 
           <Text className="text-xl font-bold text-gray-800">
-            {currentMonth.format("MMMM YYYY")}
+            {currentMonth.format('MMMM YYYY')}
           </Text>
 
           <TouchableOpacity className="p-2" onPress={() => changeMonth(1)}>
@@ -203,7 +203,7 @@ export const Calendar: React.FC<CalendarProps> = ({
 
         <View>
           <View className="flex-row">
-            {DAYS.map((day) => (
+            {DAYS.map(day => (
               <View
                 key={`col-${day}`}
                 className="flex-1 m-[1px] px-1 py-2 text-center bg-white"
@@ -228,15 +228,15 @@ export const Calendar: React.FC<CalendarProps> = ({
                 const marked = isDateMarked(item);
 
                 let cellClassName =
-                  "flex-1 m-[1px] rounded-lg shadow-sm p-1 bg-white h-14";
+                  'flex-1 m-[1px] rounded-lg shadow-sm p-1 bg-white h-14';
 
                 if (marked && !selected)
-                  cellClassName += " border border-sky-500";
-                if (disabled) cellClassName += " opacity-30";
+                  cellClassName += ' border border-sky-500';
+                if (disabled) cellClassName += ' opacity-30';
 
-                let textClassName = "font-semibold text-gray-800 ";
+                let textClassName = 'font-semibold text-gray-800 ';
                 if (selected)
-                  textClassName += " text-sky-500 w-6 h-6 font-bold";
+                  textClassName += ' text-sky-500 w-6 h-6 font-bold';
 
                 return (
                   <TouchableOpacity
@@ -244,7 +244,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                     className={cellClassName}
                     disabled={disabled}
                     onPress={() => {
-                      if (!disabled && typeof item === "number") {
+                      if (!disabled && typeof item === 'number') {
                         const date = currentMonth.date(item).toDate();
                         handleDateSelect(date);
                         handleCalendarItemClick(fullDate);
@@ -252,7 +252,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                     }}
                   >
                     <Text className={textClassName}>{item}</Text>
-                    {!disabled && item && totalMonth !== "0" && (
+                    {!disabled && item && totalMonth !== '0' && (
                       <Text className="text-sm text-sky-400 text-right font-semibold mt-auto tracking-tighter">
                         {totalMonth}
                       </Text>
@@ -267,7 +267,7 @@ export const Calendar: React.FC<CalendarProps> = ({
 
       <ListBills
         bills={billsOfDay}
-        onEdit={(bill) => {
+        onEdit={bill => {
           sheetRef.current?.expand();
           setBillDetail(bill);
         }}
@@ -276,7 +276,7 @@ export const Calendar: React.FC<CalendarProps> = ({
       <BottomMenu />
       <BottomSheet
         ref={sheetRef}
-        snapPoints={["50%"]}
+        snapPoints={['50%']}
         enablePanDownToClose
         index={-1}
       >

@@ -1,18 +1,21 @@
-import axios from "axios";
-import { IReportByCategory, IReportByPeriod, IReportGeneral } from "types";
+import axios from 'axios';
+import { IReportByCategory, IReportByPeriod, IReportGeneral } from '@types';
 
-const url = "/report/";
-const getGeneralReport = async (date: string) => {
-  const { data } = await axios.get<IReportGeneral>(url + "general", {
-    params: { date },
+const url = '/report/';
+const getGeneralReport = async (params: {
+  fromDate?: string | null;
+  toDate?: string | null;
+}) => {
+  const { data, headers } = await axios.get<IReportGeneral>(url + 'general', {
+    params,
   });
-  console.log(url + "general");
+  console.log(headers);
 
   return data;
 };
 
 const getTargetReport = async (date: string) => {
-  const { data } = await axios.get(url + "target", { params: { date } });
+  const { data } = await axios.get(url + 'target', { params: { date } });
   return data;
 };
 
@@ -24,7 +27,7 @@ const getReport = async (params: { fromDate: string; toDate: string }) => {
 const getReportByCategory = async (
   date: string
 ): Promise<IReportByCategory[]> => {
-  const { data } = await axios.get(url + "by-category", {
+  const { data } = await axios.get(url + 'by-category', {
     params: { date },
   });
   return data;
@@ -34,7 +37,7 @@ const getReportByPeriod = async (params: {
   fromDate: string;
   toDate: string;
 }): Promise<IReportByPeriod[]> => {
-  const { data } = await axios.get(url + "by-period", { params });
+  const { data } = await axios.get(url + 'by-period', { params });
   return data;
 };
 export {

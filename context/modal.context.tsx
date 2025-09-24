@@ -1,13 +1,13 @@
-import { createContext, useContext, ReactNode, useRef, useState } from "react";
-import AddBill from "../components/add-bills";
-import DatePicker, { DatePickerProps } from "react-native-date-picker";
+import { createContext, useContext, ReactNode, useRef, useState } from 'react';
+import AddBill from '../components/add-bills';
+import DatePicker, { DatePickerProps } from 'react-native-date-picker';
 import {
   useForm,
   FormProvider,
   UseFormReturn,
   FieldValues,
-} from "react-hook-form";
-import { IBill } from "types";
+} from 'react-hook-form';
+import { IBill } from '@types';
 
 // Common provider contain create property and create contact modals which have to use global
 
@@ -17,7 +17,7 @@ import { IBill } from "types";
 // onOpen is Promise, when call opOpen, modal will show, and when modal close, promise finish
 // if created successful, promise return new property, if cancel return undefined
 
-interface DateProps extends Omit<DatePickerProps, "date"> {
+interface DateProps extends Omit<DatePickerProps, 'date'> {
   isOpen?: boolean;
   date?: Date | null;
 }
@@ -51,7 +51,7 @@ interface CommonModalProps {
 
 const defaultUseDisclosure = <T,>(defaultValue?: T): UseDisclosureProps<T> => ({
   isOpen: false,
-  onOpen: () => new Promise<T | undefined>((resolve) => resolve(defaultValue)),
+  onOpen: () => new Promise<T | undefined>(resolve => resolve(defaultValue)),
   onClose: () => {},
 });
 
@@ -108,7 +108,7 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
   const handleOpenAddBillModal = (bills: IBill[]) => {
     setBillData(bills);
     setAddBillModalVisible(true);
-    return new Promise<IBill[] | undefined>((resolve) => {
+    return new Promise<IBill[] | undefined>(resolve => {
       promiseAddBillModal.current = { resolve };
     });
   };
@@ -124,7 +124,7 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
       formMethods.reset(defaultValues);
     }
     setFormModalVisible(true);
-    return new Promise<any>((resolve) => {
+    return new Promise<any>(resolve => {
       promiseFormModal.current = { resolve };
     });
   };
@@ -138,10 +138,10 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
 
   const handleOpenDatePickerModal = (dateProps: DateProps) => {
     setDatePickerModalProps(() => ({ isOpen: true, ...dateProps }));
-    return new Promise<Date | undefined>((resolve) => {
+    return new Promise<Date | undefined>(resolve => {
       promiseDatePicker.current = { resolve };
     }).finally(() => {
-      setDatePickerModalProps((pre) => ({ ...pre, isOpen: false }));
+      setDatePickerModalProps(pre => ({ ...pre, isOpen: false }));
     });
   };
 
@@ -182,7 +182,8 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
         modal
         open={selectDatePickerModalProps.isOpen}
         date={selectDatePickerModalProps.date || new Date()}
-        onConfirm={(date) => {
+        mode={selectDatePickerModalProps.mode || 'date'}
+        onConfirm={date => {
           handleDatePickerClose(date);
         }}
         onCancel={() => {
@@ -191,4 +192,9 @@ export const CommonModalProvider = ({ children }: { children: ReactNode }) => {
       />
     </CommonModalContext.Provider>
   );
+};
+
+export const useDatePicker = () => {
+  const context = useContext(CommonModalContext);
+  return context.datePicker;
 };

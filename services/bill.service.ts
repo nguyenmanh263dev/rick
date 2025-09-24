@@ -1,9 +1,9 @@
-import axios from "../libs/axios";
-import { IBill, IBillCalendar } from "../types";
-import dayjs from "dayjs";
+import axios from '../libs/axios';
+import { IBill, IBillCalendar } from '@types';
+import dayjs from 'dayjs';
 // Get all category
 export const getBills = async (): Promise<IBill[]> => {
-  const { data } = await axios.get("/bill");
+  const { data } = await axios.get('/bill');
   return data;
 };
 
@@ -15,7 +15,7 @@ export const getBill = async (id: string): Promise<IBill> => {
 
 // Create new category
 export const createBill = async (category: Partial<IBill>): Promise<IBill> => {
-  const { data } = await axios.post("/bill", category);
+  const { data } = await axios.post('/bill', category);
   return data;
 };
 
@@ -40,15 +40,15 @@ export const getBillByImage = async (date: string): Promise<IBill[]> => {
 
 export const uploadBillImage = async (file: any): Promise<IBill[]> => {
   const formData = new FormData();
-  formData.append("file", {
+  formData.append('file', {
     uri: file.uri,
-    type: file.type || "image/jpeg",
-    name: file.fileName || "image.jpg",
+    type: file.type || 'image/jpeg',
+    name: file.fileName || 'image.jpg',
   } as any);
 
-  const { data } = await axios.post("/bill/get-by-image", formData, {
+  const { data } = await axios.post('/bill/get-by-image', formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
 
@@ -56,7 +56,7 @@ export const uploadBillImage = async (file: any): Promise<IBill[]> => {
 };
 
 export const createBills = async (bills: IBill[]): Promise<IBill[]> => {
-  const { data } = await axios.post("/bill/insert-many", bills);
+  const { data } = await axios.post('/bill/insert-many', bills);
   return data;
 };
 

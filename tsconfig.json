@@ -11,14 +11,23 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "jsx": "react-native",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "types": ["./types/*"],
-      "services": ["./services/*"],
-      "components": ["./components/*"],
-      "hooks": ["./hooks/*"],
-      "utils": ["./utils/*"],
-      "context": ["./context/*"]
+      "@types": ["./types/index"],
+      "@types/*": ["./types/*"],
+      "@services": ["./services/index"],
+      "@services/*": ["./services/*"],
+      "@components": ["./components/index"],
+      "@components/*": ["./components/*"],
+      "@hooks": ["./hooks/index"],
+      "@hooks/*": ["./hooks/*"],
+      "@utils": ["./utils/index"],
+      "@utils/*": ["./utils/*"],
+      "@context": ["./context/index"],
+      "@context/*": ["./context/*"]
     }
   },
   "include": [

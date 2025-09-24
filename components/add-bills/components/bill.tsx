@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Modal,
   View,
@@ -8,14 +8,14 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
-} from "react-native";
-import RNPickerSelect from "react-native-picker-select";
-import Swipeable from "react-native-gesture-handler/Swipeable";
-import Ionicons from "react-native-vector-icons/FontAwesome";
-import { IBill } from "../../../types";
-import { DatePicker } from "../../form/date-picker";
-import { useCategory } from "../../../hooks";
-import { formatCurrencyToNumber, formatCurrency } from "utils/number";
+} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import Ionicons from 'react-native-vector-icons/FontAwesome';
+import { IBill } from '../../../types';
+import { DatePicker } from '../../form/date-picker';
+import { useCategory } from '../../../hooks';
+import { formatCurrencyToNumber, formatCurrency } from 'utils/number';
 
 const renderRightActions = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity onPress={onPress} className="justify-center px-4">
@@ -25,23 +25,23 @@ const renderRightActions = ({ onPress }: { onPress: () => void }) => (
 
 const defaultIncomeOutcome = [
   {
-    label: "Increase",
-    value: "increase",
+    label: 'Increase',
+    value: 'increase',
   },
   {
-    label: "Decrease",
-    value: "decrease",
+    label: 'Decrease',
+    value: 'decrease',
   },
 ];
 
 const defaultCategories = [
   {
-    label: "Food",
-    value: "Food",
+    label: 'Food',
+    value: 'Food',
   },
   {
-    label: "Drink",
-    value: "Drink",
+    label: 'Drink',
+    value: 'Drink',
   },
 ];
 
@@ -50,10 +50,17 @@ interface Props {
   onChange: (value: IBill) => void;
   index: number;
   item: IBill;
+  autoSetDate?: (date: Date) => void;
 }
-export const Bill = ({ onDelete, index, item, onChange }: Props) => {
+export const Bill = ({
+  onDelete,
+  index,
+  item,
+  onChange,
+  autoSetDate,
+}: Props) => {
   const { data: categories } = useCategory();
-  const defaultCategories = categories?.map((category) => ({
+  const defaultCategories = categories?.map(category => ({
     label: category.name,
     value: category.id,
   }));
@@ -80,23 +87,31 @@ export const Bill = ({ onDelete, index, item, onChange }: Props) => {
             multiline={true}
             placeholder="Enter amount"
             numberOfLines={4}
-            onChangeText={(text) => {
+            onChangeText={text => {
               onChange({ ...item, amount: formatCurrencyToNumber(text) });
             }}
           />
           <View className="max-w-40 overflow-hidden">
             <RNPickerSelect
               value={item.categoryId}
-              onValueChange={(categoryId) => {
+              onValueChange={categoryId => {
                 onChange({ ...item, categoryId });
               }}
               items={defaultCategories}
+              onDonePress={() => {
+                console.log('done');
+              }}
+              doneText="Add New Category"
             />
           </View>
 
           <DatePicker
-            onValueChange={(date) => {
+            onValueChange={date => {
               if (!date) return;
+              if (autoSetDate) {
+                autoSetDate(date);
+                return;
+              }
               onChange({ ...item, date });
             }}
             date={item.date}
@@ -107,7 +122,7 @@ export const Bill = ({ onDelete, index, item, onChange }: Props) => {
           value={item.description}
           multiline={true}
           numberOfLines={4}
-          onChangeText={(text) => {
+          onChangeText={text => {
             onChange({ ...item, description: text });
           }}
         />
