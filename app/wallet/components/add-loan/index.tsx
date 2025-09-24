@@ -1,4 +1,4 @@
-import { DatePicker } from 'components/form/date-picker';
+import { DatePicker } from '@components/form/date-picker';
 import { useState } from 'react';
 import { Modal, View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { ILoan, ACTIVITY } from '@types';

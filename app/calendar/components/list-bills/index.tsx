@@ -4,7 +4,7 @@ import { View, Text, FlatList } from 'react-native';
 import { IBill } from '@types';
 import { formatNumber } from '../../../../utils/index';
 import { formatDate } from '../../../../utils/date';
-import SwipeableToDelete from 'components/swipable-to-delete';
+import SwipeableToDelete from '@components/swipable-to-delete';
 
 const ListBills = ({
   bills,

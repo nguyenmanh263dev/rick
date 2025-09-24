@@ -1,6 +1,6 @@
-import Button from "components/button";
-import React from "react";
-import { Modal as ReactNativeModal, View, Text, Pressable } from "react-native";
+import Button from '@components/button';
+import React from 'react';
+import { Modal as ReactNativeModal, View, Text, Pressable } from 'react-native';
 
 const Modal: React.FC<ModalProps> = ({
   isVisible,

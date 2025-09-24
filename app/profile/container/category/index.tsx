@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,16 +6,16 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-} from "react-native";
-import Ionicons from "react-native-vector-icons/FontAwesome";
-import { useNavigation } from "@react-navigation/native";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCategory } from "../../../../services/category.service";
-import CreateCategoryModal from "./components/CreateCategoryModal";
-import { useCategory } from "../../../../hooks";
-import SwipeableToDelete from "../../../../components/swipable-to-delete";
-import { ICategory } from "../../../../types";
-import { Toast } from "react-native-toast-notifications";
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CategoryService } from '@services';
+import CreateCategoryModal from './components/CreateCategoryModal';
+import { useCategory } from '@hooks';
+import SwipeableToDelete from '@components/swipable-to-delete';
+import { ICategory } from '@types';
+import { Toast } from 'react-native-toast-notifications';
 
 const CategoryDetail = () => {
   const navigation = useNavigation();
@@ -27,11 +27,11 @@ const CategoryDetail = () => {
 
   // Delete category mutation
   const deleteMutation = useMutation({
-    mutationFn: deleteCategory,
+    mutationFn: CategoryService.deleteCategory,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-      Toast.show("Deleted", {
-        type: "success",
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      Toast.show('Deleted', {
+        type: 'success',
       });
     },
   });
@@ -47,21 +47,21 @@ const CategoryDetail = () => {
   };
 
   const handleUpdateCategory = (category: ICategory) => {
-    navigation.navigate("CategoryDetailForm" as never, { category });
+    navigation.navigate('CategoryDetailForm' as never, { category });
   };
 
   const handleDeleteCategory = (category: ICategory) => {
     Alert.alert(
-      "Delete Category",
+      'Delete Category',
       `Are you sure you want to delete ${category.name}?`,
       [
         {
-          text: "Cancel",
-          style: "cancel",
+          text: 'Cancel',
+          style: 'cancel',
         },
         {
-          text: "Delete",
-          style: "destructive",
+          text: 'Delete',
+          style: 'destructive',
           onPress: () => {
             deleteMutation.mutate(category.id);
           },
@@ -102,7 +102,7 @@ const CategoryDetail = () => {
               No categories found
             </Text>
           ) : (
-            categories.map((category) => (
+            categories.map(category => (
               <SwipeableToDelete
                 key={category.id}
                 onDelete={() => handleDeleteCategory(category)}
@@ -144,7 +144,6 @@ const CategoryDetail = () => {
           isVisible={isCreateCategoryModalVisible}
           onClose={() => setIsCreateCategoryModalVisible(false)}
           onSubmit={handleCreateCategorySubmit}
-          title="Create Category"
         />
       </SafeAreaView>
     </>

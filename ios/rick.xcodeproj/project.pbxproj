@@ -17,6 +17,7 @@
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		C2ABD619069B00223D4AFC4D /* libPods-rick.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF97274039D028EBC4C5AC42 /* libPods-rick.a */; };
 		E117FF112E479A87009B6A75 /* main.jsbundle in Sources */ = {isa = PBXBuildFile; fileRef = E117FF102E479A87009B6A75 /* main.jsbundle */; };
+		E1192FC92E839877004F2471 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = E1192FC82E839877004F2471 /* main.jsbundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		DEBECC344266C192FBC82B19 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = rick/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E117FF102E479A87009B6A75 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		E1192FC82E839877004F2471 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		E18C6EA52E72CCAE00FC4EF8 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		E18C6EA62E72CCAE00FC4EF8 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		E18C6EA72E72CCAE00FC4EF8 /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome6_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Solid.ttf"; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				E1192FC82E839877004F2471 /* main.jsbundle */,
 				E18C6EB02E72CCAE00FC4EF8 /* AntDesign.ttf */,
 				E18C6EAD2E72CCAE00FC4EF8 /* Entypo.ttf */,
 				E18C6EAA2E72CCAE00FC4EF8 /* EvilIcons.ttf */,
@@ -241,6 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1192FC92E839877004F2471 /* main.jsbundle in Resources */,
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,

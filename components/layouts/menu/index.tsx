@@ -1,15 +1,15 @@
-import React, { ReactNode } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { menuItems, MenuItemType } from "./config";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
-import { useAddBillModal } from "../../../context/modal.context";
-import { useMutation } from "@tanstack/react-query";
-import { uploadBillImage } from "../../../services/bill.service";
-import { RootStackParamList } from "../../../types/navigation.types";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import Spinner from "components/spinner";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import React, { ReactNode } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { menuItems, MenuItemType } from './config';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
+import { useAddBillModal } from '../../../context/modal.context';
+import { useMutation } from '@tanstack/react-query';
+import { uploadBillImage } from '../../../services/bill.service';
+import { RootStackParamList } from '../../../types/navigation.types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Spinner from '@components/spinner';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type BottomMenuProps = {};
 
@@ -46,7 +46,7 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
+      mediaTypes: ['images'],
       allowsEditing: false,
       quality: 1,
     });
@@ -72,7 +72,7 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
               <Ionicons
                 name={item.icon}
                 size={24}
-                color={route.name === item.label ? "#4B5563" : "#4B5563"}
+                color={route.name === item.label ? '#4B5563' : '#4B5563'}
               />
               <Text className="text-xs mt-1 text-gray-500">{item.label}</Text>
             </TouchableOpacity>
@@ -96,7 +96,7 @@ const BottomMenu: React.FC<BottomMenuProps> = () => {
               <Ionicons
                 name={item.icon}
                 size={24}
-                color={route.name === item.label ? "#4B5563" : "#4B5563"}
+                color={route.name === item.label ? '#4B5563' : '#4B5563'}
               />
               <Text className="text-xs mt-1 text-gray-500">{item.label}</Text>
             </TouchableOpacity>

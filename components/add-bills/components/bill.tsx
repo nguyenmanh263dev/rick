@@ -15,7 +15,7 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { IBill } from '../../../types';
 import { DatePicker } from '../../form/date-picker';
 import { useCategory } from '../../../hooks';
-import { formatCurrencyToNumber, formatCurrency } from 'utils/number';
+import { formatCurrencyToNumber, formatCurrency } from '@utils/number';
 
 const renderRightActions = ({ onPress }: { onPress: () => void }) => (
   <TouchableOpacity onPress={onPress} className="justify-center px-4">

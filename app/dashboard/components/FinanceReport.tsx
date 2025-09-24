@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { formatNumber } from '../../../utils/index';
 import { useQuery } from '@tanstack/react-query';
-import { ReportService } from 'services/index';
+import { ReportService } from '@services';
 import dayjs from 'dayjs';
 import { useCategory, useUserConfig } from '@hooks';
 import { FORMAT_MONTH_YEAR, formatDate } from '../../../utils/date';

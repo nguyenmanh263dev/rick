@@ -19,9 +19,9 @@ import ListBills from './components/list-bills';
 import { set, get } from 'lodash';
 import { FORMAT_DATE } from '../../utils/date';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Bill } from 'components/add-bills/components/bill';
-import { BillService } from 'services/index';
-import Button from 'components/button';
+import { Bill } from '@components/add-bills/components/bill';
+import { BillService } from '@services';
+import Button from '@components/button';
 
 const DAYS: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

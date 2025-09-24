@@ -10,7 +10,7 @@ import {
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateCategory } from 'services/category.service';
+import { CategoryService } from '@services';
 import { ICategory } from '@types';
 
 const CategoryDetailForm = () => {
@@ -26,7 +26,7 @@ const CategoryDetailForm = () => {
 
   const updateMutation = useMutation({
     mutationFn: (updatedCategory: ICategory) =>
-      updateCategory(category.id, updatedCategory),
+      CategoryService.updateCategory(category.id, updatedCategory),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       navigation.goBack();

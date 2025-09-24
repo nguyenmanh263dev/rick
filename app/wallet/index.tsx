@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import { ILoan, ACTIVITY } from '@types';
 import AddLoan from './components/add-loan';
-import { formatNumber } from 'utils';
-import { formatDate } from 'utils/date';
+import { formatNumber } from '@utils';
+import { formatDate } from '@utils/date';
 import { Swipeable } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
